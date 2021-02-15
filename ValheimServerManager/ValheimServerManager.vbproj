@@ -47,11 +47,16 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\vsm.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -73,13 +78,23 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.vb">
+    <Compile Include="Classes\clsConfigInfo.vb" />
+    <Compile Include="Classes\clsLogger.vb" />
+    <Compile Include="Classes\clsServer.vb" />
+    <Compile Include="Forms\frmEditServer.Designer.vb">
+      <DependentUpon>frmEditServer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmEditServer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <Compile Include="Forms\frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\frmMain.Designer.vb">
+      <DependentUpon>frmMain.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\modMain.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -97,6 +112,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\frmEditServer.resx">
+      <DependentUpon>frmEditServer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMain.resx">
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -115,6 +136,29 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\data_view.png" />
+    <None Include="Resources\folder_view.png" />
+    <None Include="Resources\bullet_ball_glass_grey.png" />
+    <None Include="Resources\bullet_ball_glass_yellow.png" />
+    <None Include="Resources\bullet_ball_glass_red.png" />
+    <None Include="Resources\bullet_ball_glass_green.png" />
+    <None Include="Resources\bullet_ball_glass_blue.png" />
+    <None Include="Resources\eye.png" />
+    <None Include="Resources\folder_into.png" />
+    <None Include="Resources\server_to_client.png" />
+    <None Include="Resources\data_down.png" />
+    <None Include="Resources\data_out.png" />
+    <None Include="Resources\media_stop_red.png" />
+    <None Include="Resources\media_play_green.png" />
+    <None Include="Resources\delete2.png" />
+    <None Include="Resources\pencil2.png" />
+    <None Include="Resources\add2.png" />
+    <Content Include="Resources\icon_256.png" />
+    <Content Include="Resources\icon_48.png" />
+    <Content Include="Resources\vsm.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

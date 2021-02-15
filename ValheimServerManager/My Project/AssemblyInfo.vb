@@ -9,11 +9,11 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("ValheimServerManager")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyDescription("Manages a Valheim Game Server")>
+<Assembly: AssemblyCompany("None")>
 <Assembly: AssemblyProduct("ValheimServerManager")>
 <Assembly: AssemblyCopyright("Copyright ©  2021")>
-<Assembly: AssemblyTrademark("")>
+<Assembly: AssemblyTrademark("Valheim is a trademark of Coffee Stain and Iron Gate.  Notice is cautionary and does not imply publication.")>
 
 <Assembly: ComVisible(False)>
 
