@@ -1,21 +1,9 @@
 ﻿Imports ValheimServerManager
 
 Public Class frmMain
-    Private Enum MonitorState
-        [Loading] = 0
-        [Running] = 1
-        [Stopping] = 2
-    End Enum
-
-    Private WithEvents foTimer As Timer
-
-
-    Private moCheckThread As System.Threading.Thread
     Private moLoggedErr As New List(Of Integer)
 
     Private foInstallThread As System.Threading.Thread
-
-    Private fiMonitorState As MonitorState = MonitorState.Loading
 
 
 
@@ -39,44 +27,113 @@ Public Class frmMain
             psFolder = String.Format("C:\Valheim Server {0:#0}", piCount + 1)
             psServer = String.Format("My New Server {0:#0}", piCount + 1)
         End If
+        psSaveDir = System.IO.Path.Combine(psFolder, "savedata")
 
         Dim poNewServ As New clsServer(modMain.BackupFolderPath, psFolder, psServer, 2456, "My New World", modMain.RandomPassword(10), psSaveDir, False, True, True, 3, 0)
-        poFrm.ReadyForm(poNewServ)
-        AddHandler poFrm.EditComplete, AddressOf ServerEdit_EditComplete
+        poNewServ.AutoStart = False
+
+        poFrm.ReadyForm(poNewServ, False)
+        AddHandler poFrm.EditComplete, AddressOf ServerAdd_EditComplete
+
         poFrm.Show(Me)
     End Sub
 
     Private Sub btnAppFolder_Click(sender As Object, e As EventArgs) Handles btnAppFolder.Click
         Try
-            Process.Start("explorer.exe", "/select," & Chr(34) & modMain.RootFolderPath & Chr(34))
-
+            Process.Start("explorer.exe", "/root," & Chr(34) & modMain.RootFolderPath & "\" & Chr(34))
         Catch ex As Exception
             MsgBox("Unable to open app folder: " & modMain.RootFolderPath, giModalExclOK, "Error starting explorer.")
         End Try
     End Sub
 
     Private Sub btnBackup_Click(sender As Object, e As EventArgs) Handles btnBackup.Click
-
+        If lvwServers.SelectedItems.Count > 0 Then
+            Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
+            If poTag IsNot Nothing Then
+                If poTag.CurrentState = clsServer.StateVals.Stopped Then
+                    poTag.DoBackup()
+                End If
+            End If
+        End If
     End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
-
+        If lvwServers.SelectedItems.Count > 0 Then
+            Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
+            If poTag IsNot Nothing Then
+                Dim psTemp As String = "Are you sure you wish to remove this server entry?" & vbCrLf
+                psTemp = psTemp & "Note that you will need to manually remove the program " & vbCrLf
+                psTemp = psTemp & "folder yourself, this program will not delete it." & vbCrLf & vbCrLf
+                psTemp = psTemp & "REMOVE SERVER ENTRY?"
+                If MsgBox(psTemp, giModalExclYesNo, "Confirm Removal") = MsgBoxResult.Yes Then
+                    For Each poRow As DataRow In goConfig.ServerData.Rows
+                        If poRow("GUID") = poTag.CreationGUID Then
+                            poRow.Delete()
+                            goConfig.SaveConfigFile()
+                            lvwServers.Items.Remove(lvwServers.SelectedItems(0))
+                            lvwServers.Refresh()
+                            Exit Sub
+                        End If
+                    Next
+                End If
+            End If
+        End If
     End Sub
 
     Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
-
+        If lvwServers.SelectedItems.Count > 0 Then
+            Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
+            If poTag IsNot Nothing Then
+                Dim poFrm As New frmEditServer
+                poFrm.ReadyForm(poTag, True)
+                AddHandler poFrm.EditComplete, AddressOf ServerEdit_EditComplete
+                poFrm.Show(Me)
+            End If
+        End If
     End Sub
 
     Private Sub btnRestore_Click(sender As Object, e As EventArgs) Handles btnRestore.Click
-
+        If lvwServers.SelectedItems.Count > 0 Then
+            Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
+            If poTag IsNot Nothing Then
+                If poTag.CurrentState = clsServer.StateVals.Stopped Then
+                    Using poDlg As New OpenFileDialog
+                        poDlg.Title = "Select world backup to restore"
+                        poDlg.RestoreDirectory = False
+                        poDlg.InitialDirectory = poTag.BackupPath
+                        poDlg.FileName = poTag.CreationGUID & "*.zip"
+                        poDlg.Filter = "Zip Files|*.zip|All Files|*.*"
+                        poDlg.FilterIndex = 0
+                        poDlg.Multiselect = False
+                        If poDlg.ShowDialog(Me) = DialogResult.OK Then
+                            poTag.DoRestore(poDlg.FileName)
+                        End If
+                    End Using
+                End If
+            End If
+        End If
     End Sub
 
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
-
+        If lvwServers.SelectedItems.Count > 0 Then
+            Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
+            If poTag IsNot Nothing Then
+                If poTag.CurrentState = clsServer.StateVals.Stopped Then
+                    poTag.AutoStart = True
+                    poTag.StartMonitor()
+                End If
+            End If
+        End If
     End Sub
 
     Private Sub btnStop_Click(sender As Object, e As EventArgs) Handles btnStop.Click
-
+        If lvwServers.SelectedItems.Count > 0 Then
+            Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
+            If poTag IsNot Nothing Then
+                poTag.AutoStart = False
+                poTag.StopMonitor()
+            End If
+        End If
     End Sub
 
     Private Sub btnViewServerFolder_Click(sender As Object, e As EventArgs) Handles btnViewServerFolder.Click
@@ -84,7 +141,7 @@ Public Class frmMain
             Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
             If poTag IsNot Nothing Then
                 Try
-                    Process.Start("explorer.exe", "/select," & Chr(34) & poTag.FolderPath & Chr(34))
+                    Process.Start("explorer.exe", "/root," & Chr(34) & poTag.FolderPath & "\" & Chr(34))
                 Catch ex As Exception
                     MsgBox("Unable to open server folder: " & poTag.FolderPath, giModalExclOK, "Error starting explorer.")
                 End Try
@@ -93,37 +150,27 @@ Public Class frmMain
     End Sub
 
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
-
+        If lvwServers.SelectedItems.Count > 0 Then
+            Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
+            If poTag IsNot Nothing Then
+                If poTag.CurrentState = clsServer.StateVals.Stopped Then
+                    poTag.DoUpdate()
+                End If
+            End If
+        End If
     End Sub
 
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = My.Resources.vsm
         Me.Text = "VSM v" & Application.ProductVersion
-        fiMonitorState = MonitorState.Loading
 
         modMain.Initialize()
-
-        foTimer = New Timer
-        foTimer.Interval = 1000
-        foTimer.Enabled = True
+        Call LoadGui()
     End Sub
 
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         goLogger.StopUEH()
-        fiMonitorState = MonitorState.Stopping
-        foTimer.Enabled = False
-        If moCheckThread IsNot Nothing Then
-            Try
-                If moCheckThread.IsAlive Then
-                    moCheckThread.Abort()
-                End If
-            Catch ex As Exception
-                ' don't care 
-            Finally
-                moCheckThread = Nothing
-            End Try
-        End If
         If foInstallThread IsNot Nothing Then
             Try
                 If foInstallThread.IsAlive Then
@@ -137,38 +184,82 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub foTimer_Tick(sender As Object, e As EventArgs) Handles foTimer.Tick
-        Select Case fiMonitorState
-            Case MonitorState.Stopping
-                Exit Sub
-
-            Case MonitorState.Running
-
-            Case MonitorState.Loading
-                foTimer.Enabled = False
-                Call LoadGui()
-        End Select
-    End Sub
-
     Private Sub lvwServers_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvwServers.SelectedIndexChanged
         Call SetMenuOptions()
     End Sub
 
-    Private Sub ServerEdit_EditComplete(SaveChanges As Boolean, ByRef oServ As clsServer)
-        If SaveChanges Then
-            ' new or not 
-            For Each poLvItem As ListViewItem In lvwServers.Items
-                If oServ.Equals(poLvItem.Tag) Then
-                    ' update this one 
-
-                    Exit Sub
+    Private Sub mnuPopInfo_Click(sender As Object, e As EventArgs) Handles mnuPopInfo.Click
+        If lvwServers.SelectedItems.Count > 0 Then
+            Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
+            If poTag IsNot Nothing Then
+                If poTag.CurrentState = clsServer.StateVals.Running Then
+                    Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
+                    Application.DoEvents()
+                    Dim poInfo As SteamQueryNet.Models.ServerInfo = poTag.GetServerInfo
+                    Dim poPlayers As List(Of SteamQueryNet.Models.Player) = poTag.GetPlayerInfo
+                    Me.Cursor = System.Windows.Forms.Cursors.Arrow
+                    If poInfo IsNot Nothing Then
+                        Dim poSB As New System.Text.StringBuilder
+                        poSB.Append("Steam ID: ").Append(poInfo.SteamID).Append(vbCrLf)
+                        poSB.Append("Game ID: ").Append(poInfo.GameID).Append(vbCrLf)
+                        poSB.Append("Game: ").Append(poInfo.Game).Append(vbCrLf)
+                        poSB.Append("Version: ").Append(poInfo.Version).Append(vbCrLf)
+                        poSB.Append("Server Type: ").Append(poInfo.ServerType).Append(vbCrLf)
+                        poSB.Append("# of Players: ").Append(poPlayers.Count).Append(vbCrLf)
+                        MsgBox(poSB.ToString, giModalInfoOK, "Server Info")
+                    Else
+                        MsgBox("Failed to get server information from Steam client.", giModalExclOK, "No Data")
+                    End If
                 End If
-            Next
+            End If
+        End If
+    End Sub
+
+    Private Sub mnuPop_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles mnuPop.Opening
+        If lvwServers.SelectedItems.Count = 0 Then
+            e.Cancel = True
+        Else
+            Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
+            If poTag IsNot Nothing Then
+                If poTag.CurrentState <> clsServer.StateVals.Running Then
+                    e.Cancel = True
+                End If
+            End If
+        End If
+    End Sub
+
+
+
+    Private Sub ServerAdd_EditComplete(SaveChanges As Boolean, ByRef oServ As clsServer)
+        If SaveChanges Then
             foInstallThread = New System.Threading.Thread(AddressOf InstallServer)
             foInstallThread.IsBackground = True
             foInstallThread.Start(oServ)
         End If
     End Sub
+
+    Private Sub ServerEdit_EditComplete(SaveChanges As Boolean, ByRef oServ As clsServer)
+        If SaveChanges Then
+            For Each poRow As DataRow In goConfig.ServerData.Rows
+                If poRow("GUID") = oServ.CreationGUID Then
+                    'poRow.Item("ServerFolder") = oServ.FolderPath
+                    'poRow.Item("ServerSaveDir") = oServ.SaveDir
+                    poRow.Item("ServerName") = oServ.ServerName
+                    poRow.Item("ServerPort") = oServ.Port
+                    poRow.Item("ServerWorld") = oServ.WorldName
+                    poRow.Item("ServerPassword") = oServ.Password
+                    poRow.Item("UpdateOnRestart") = oServ.UpdateServer
+                    poRow.Item("Restart") = oServ.RestartServer
+                    poRow.Item("RestartHour") = oServ.RestartHour
+                    poRow.Item("RestartMin") = oServ.RestartMin
+                    poRow.Item("Backup") = oServ.BackupServer
+                    goConfig.SaveConfigFile()
+                    UpdateListView(oServ)
+                End If
+            Next
+        End If
+    End Sub
+
 
 
 
@@ -189,11 +280,11 @@ Public Class frmMain
                 End Try
             End If
             ' validate save directory
-            If pbContinue And Not System.IO.Directory.Exists(oServer.SaveDir) Then
+            If pbContinue And Not System.IO.Directory.Exists(oServer.WorldDataFolder) Then
                 Try
-                    System.IO.Directory.CreateDirectory(oServer.SaveDir)
+                    System.IO.Directory.CreateDirectory(oServer.WorldDataFolder)
                 Catch ex As Exception
-                    MsgBox("Failed to create save directory: " & oServer.SaveDir, giModalCritOK, "Cannot install server.")
+                    MsgBox("Failed to create save directory: " & oServer.WorldDataFolder, giModalCritOK, "Cannot install server.")
                     pbContinue = False
                 End Try
             End If
@@ -232,6 +323,7 @@ Public Class frmMain
             ' save server to config and listview
             If pbContinue Then
                 Dim poDR As DataRow = goConfig.ServerData.NewRow
+                poDR.Item("GUID") = oServer.CreationGUID
                 poDR.Item("ServerFolder") = oServer.FolderPath
                 poDR.Item("ServerName") = oServer.ServerName
                 poDR.Item("ServerPort") = oServer.Port
@@ -260,11 +352,9 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub ServerFound(ByVal oServer As clsServer)
-
-
+    Private Sub ServerStatus(ByVal oServer As clsServer)
+        Call UpdateListView(oServer)
     End Sub
-
 
 
     Private Sub SetMenuOptions()
@@ -273,15 +363,25 @@ Public Class frmMain
         btnDelete.Enabled = False
         btnStart.Enabled = False
         btnStop.Enabled = False
+        btnViewServerFolder.Enabled = False
         btnBackup.Enabled = False
         btnRestore.Enabled = False
         btnUpdate.Enabled = False
 
         If lvwServers.SelectedItems.Count > 0 Then
+            Call UpdateStatus("Ready")
             Dim poServ As clsServer = lvwServers.SelectedItems(0).Tag
             If poServ IsNot Nothing Then
+                btnViewServerFolder.Enabled = True
                 If poServ.CurrentState = clsServer.StateVals.Running Then
                     btnStop.Enabled = True
+                    If poServ.RestartServer Then
+                        Dim pdNext As Date = poServ.NextRestart
+                        If pdNext <> Nothing Then
+                            Dim pdTarget As TimeSpan = pdNext.Subtract(DateTime.Now)
+                            Call UpdateStatus("Server scheduled for restart in " & FullDisplayElapsed(pdTarget.TotalSeconds))
+                        End If
+                    End If
                 Else
                     btnEdit.Enabled = True
                     btnDelete.Enabled = True
@@ -296,6 +396,26 @@ Public Class frmMain
                 End If
             End If
         End If
+    End Sub
+
+    Private Sub FindIpAdds(oThread As System.Threading.Thread)
+        Dim psLocalIP As String = "n/a"
+        Dim psExtIP As String = "n/a"
+
+        Try
+            Dim poIPs As List(Of System.Net.IPAddress)
+            poIPs = modMain.GetIPAddresses
+            Dim poLocalIP As System.Net.IPAddress = modMain.FindPrivateIP(poIPs)
+            psLocalIP = poLocalIP.ToString
+            psExtIP = modMain.GetExternalIp
+
+        Catch ex As Exception
+            goLogger.LogException("frmMain.FindIpAdds", ex)
+
+        Finally
+            Call UpdateIPs(psLocalIP, psExtIP)
+            oThread = Nothing
+        End Try
     End Sub
 
 
@@ -319,18 +439,26 @@ Public Class frmMain
             .Items.Clear()
             .SmallImageList = imlListview
             .Columns.Clear()
-            .Columns.Add("STATE", "State", 50)
-            .Columns.Add("PID", "PID", 80)
-            .Columns.Add("VER", "Version", 100)
-            .Columns.Add("NAME", "Name", 300)
-            .Columns.Add("FOLDER", "Folder", 250)
+            .Columns.Add("STATE", "State", 110)
+            .Columns.Add("PID", "PID", 50)
+            .Columns.Add("VER", "Version", 110)
+            .Columns.Add("PORTS", "Ports", 120)
+            .Columns.Add("WORLD", "World Name", 200)
+            .Columns.Add("NAME", "Name", 200)
+            .Columns.Add("FOLDER", "Folder", 200)
             .SmallImageList = imlListview
         End With
 
         Call SetMenuOptions()
 
+        ' get our IP addresses
+        Dim poIPThread As New System.Threading.Thread(AddressOf FindIpAdds)
+        poIPThread.IsBackground = True
+        poIPThread.Start(poIPThread)
 
+        ' Load list of servers
         UpdateStatus("Loading server list...")
+
         ' thread the load 
         Dim poLoadThread As New System.Threading.Thread(AddressOf LoadServerList)
         poLoadThread.IsBackground = True
@@ -338,8 +466,7 @@ Public Class frmMain
     End Sub
 
     Private Sub LoadServerList()
-
-
+        Dim poList As New List(Of clsServer)
         If goConfig.ServerCount = 0 Then
             Call SetNoData()
         Else
@@ -356,39 +483,36 @@ Public Class frmMain
                 Dim piHour As Integer = SafeInt(poDR.Item("RestartHour"))
                 Dim piMin As Integer = SafeInt(poDR.Item("RestartHour"))
                 Dim pbBackup As Boolean = poDR.Item("Backup")
-                Dim poServer As New clsServer(modMain.BackupFolderPath, psName, psFolder, piPort, psWorld, psPass, psSaveDir, pbUdpate, pbRestart, pbBackup, piHour, piMin)
+                Dim poServer As New clsServer(modMain.BackupFolderPath, psFolder, psName, piPort, psWorld, psPass, psSaveDir, pbUdpate, pbRestart, pbBackup, piHour, piMin)
+                poServer.CreationGUID = SafeStr(poDR.Item("GUID"))
+                poServer.AutoStart = True
                 AddToListView(poServer)
+                poList.Add(poServer)
             Next
         End If
-
-        UpdateStatus("Server list loaded.")
-    End Sub
-
-
-
-
-
-    Private Sub MontiorServers()
-        Try
-            'For Each poServ As clsServer In foServerList
-            '    poServ.CheckStatus()
-            'Next
-
-        Catch ThreadEx As System.Threading.ThreadAbortException
-            ' don't care, just exit 
-
-        Catch ex As Exception
-            Dim poWin32 As System.ComponentModel.Win32Exception = TryCast(ex, System.ComponentModel.Win32Exception)
-            If poWin32 IsNot Nothing Then
-                If Not moLoggedErr.Contains(poWin32.ErrorCode) Then
-                    goLogger.LogException("frmMain.MonitorServers", ex)
-                    moLoggedErr.Add(poWin32.ErrorCode)
-                End If
+        UpdateStatus("Server list loaded, starting servers...")
+        For Each poServ As clsServer In poList
+            If poServ.CurrentState = clsServer.StateVals.Stopped Or poServ.CurrentState = clsServer.StateVals.Undetermined Then
+                poServ.StartMonitor()
             End If
-        Finally
-            moCheckThread = Nothing
-        End Try
+        Next
+        UpdateStatus("Ready")
     End Sub
+
+
+
+    Private Delegate Function Del_GetServerList() As List(Of clsServer)
+    Private Function GetServerList() As List(Of clsServer)
+        If lvwServers.InvokeRequired Then
+            Return lvwServers.Invoke(New Del_GetServerList(AddressOf GetServerList))
+        Else
+            Dim poServs As New List(Of clsServer)
+            For Each poLvwItem As ListViewItem In lvwServers.Items
+                poServs.Add(poLvwItem.Tag)
+            Next
+            Return poServs
+        End If
+    End Function
 
 
     Private Delegate Sub Del_UpdateStatus(ByVal Message As String)
@@ -400,6 +524,17 @@ Public Class frmMain
             sstStatus.Invoke(poCB, poParm)
         Else
             tslStatus.Text = Message
+            Application.DoEvents()
+        End If
+    End Sub
+
+    Private Delegate Sub Del_UpdateIPs(ByVal LocalIP As String, ByVal ExternalIP As String)
+    Private Sub UpdateIPs(ByVal LocalIP As String, ByVal ExternalIP As String)
+        If sstStatus.InvokeRequired Then
+            sstStatus.Invoke(New Del_UpdateIPs(AddressOf UpdateIPs), New Object() {LocalIP, ExternalIP})
+        Else
+            tslLocalIP.Text = LocalIP
+            tslExternalIP.Text = ExternalIP
             Application.DoEvents()
         End If
     End Sub
@@ -422,14 +557,16 @@ Public Class frmMain
         If lvwServers.InvokeRequired Then
             lvwServers.Invoke(New Del_AddToListView(AddressOf AddToListView), New Object() {oServer})
         Else
-            AddHandler oServer.ServerFound, AddressOf ServerFound
+            AddHandler oServer.ServerStatus, AddressOf ServerStatus
             lvwServers.SuspendLayout()
             Dim poLvw As New ListViewItem
             poLvw.Tag = oServer
             poLvw.Text = ""
             poLvw.ImageKey = "clear"
-            poLvw.SubItems.Add(oServer.PID)
+            poLvw.SubItems.Add(IIf(oServer.PID = 0, "", oServer.PID))
             poLvw.SubItems.Add(oServer.ExeVersion)
+            poLvw.SubItems.Add(String.Format("{0:#0}-{1:#0}", oServer.Port, oServer.Port + 2))
+            poLvw.SubItems.Add(oServer.WorldName)
             poLvw.SubItems.Add(oServer.ServerName)
             poLvw.SubItems.Add(oServer.FolderPath)
             lvwServers.Items.Add(poLvw)
@@ -439,6 +576,60 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Delegate Sub Del_UpdateListView(oServer As clsServer)
+    Private Sub UpdateListView(oServer As clsServer)
+        If lvwServers.InvokeRequired Then
+            lvwServers.Invoke(New Del_UpdateListView(AddressOf UpdateListView), New Object() {oServer})
+        Else
+            For Each poLvItem As ListViewItem In lvwServers.Items
+                Dim poTag As clsServer = poLvItem.Tag
+                If poTag.CreationGUID = oServer.CreationGUID Then
+                    lvwServers.SuspendLayout()
+                    poLvItem.Tag = oServer
+                    Select Case oServer.CurrentState
+                        Case clsServer.StateVals.BackingUp
+                            poLvItem.Text = "Backing up"
+                            poLvItem.ImageKey = "yellow"
+                        Case clsServer.StateVals.Restoring
+                            poLvItem.Text = "Restoring backup"
+                            poLvItem.ImageKey = "yellow"
+                        Case clsServer.StateVals.Running
+                            poLvItem.Text = "Running"
+                            poLvItem.ImageKey = "green"
+                        Case clsServer.StateVals.Starting
+                            poLvItem.Text = "Starting"
+                            poLvItem.ImageKey = "blue"
+                        Case clsServer.StateVals.Stopped
+                            poLvItem.Text = "Stopped"
+                            poLvItem.ImageKey = "red"
+                        Case clsServer.StateVals.Updating
+                            poLvItem.Text = "Updating"
+                            poLvItem.ImageKey = "yellow"
+                        Case Else
+                            poLvItem.Text = "Undetermined"
+                            poLvItem.ImageKey = "clear"
+                    End Select
+                    poLvItem.SubItems(1).Text = IIf(oServer.PID = 0, "", oServer.PID)
+                    poLvItem.SubItems(2).Text = oServer.ExeVersion
+                    poLvItem.SubItems(3).Text = String.Format("{0:#0}-{1:#0}", oServer.Port, oServer.Port + 2)
+                    poLvItem.SubItems(4).Text = oServer.WorldName
+                    poLvItem.SubItems(5).Text = oServer.ServerName
+                    poLvItem.SubItems(6).Text = oServer.FolderPath
+                    lvwServers.BackgroundImage = Nothing
+                    lvwServers.GridLines = True
+                    lvwServers.ResumeLayout(True)
+                    If oServer.LastBackupResult = False Then
+                        Call UpdateStatus("Last backup job failed.")
+                    Else
+                        If oServer.LastRestoreResult = False Then
+                            Call UpdateStatus("Last restore job failed.")
+                        End If
+                    End If
+                    Call lvwServers_SelectedIndexChanged(Nothing, Nothing)
+                End If
+            Next
+        End If
+    End Sub
 
 
 End Class

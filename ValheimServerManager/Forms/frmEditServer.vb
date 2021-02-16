@@ -3,10 +3,14 @@
 
 
     Private foServ As clsServer
+    Private foOrigServ As clsServer
 
-
-    Public Sub ReadyForm(oServ As clsServer)
+    Public Sub ReadyForm(ByVal oServ As clsServer, ByVal bEditing As Boolean)
         foServ = oServ
+
+        foOrigServ = New clsServer(oServ.BackupPath, oServ.FolderPath, oServ.ServerName, oServ.Port, oServ.WorldName _
+                                   , oServ.Password, oServ.SaveDir, oServ.UpdateServer, oServ.RestartServer, oServ.BackupServer, oServ.RestartHour, oServ.RestartMin)
+        foOrigServ.CreationGUID = oServ.CreationGUID
 
         txtServerName.Text = foServ.ServerName
         txtWorldName.Text = foServ.WorldName
@@ -21,7 +25,26 @@
         Call chkRestart_CheckedChanged(Nothing, Nothing)
         Call txtPort_TextChanged(Nothing, Nothing)
         Call txtServerName_TextChanged(Nothing, Nothing)
+        If bEditing Then
+            txtInstallPath.Enabled = False
+            txtDataPath.Enabled = False
+            btnInstBrowse.Enabled = False
+            btnSaveBrowse.Enabled = False
+            btnSave.Text = "SA&VE"
+        Else
+            txtInstallPath.Enabled = True
+            txtDataPath.Enabled = True
+            btnInstBrowse.Enabled = True
+            btnSaveBrowse.Enabled = True
+            btnSave.Text = "INS&TALL"
+        End If
     End Sub
+
+    Public ReadOnly Property OriginalServerValues As clsServer
+        Get
+            Return foOrigServ
+        End Get
+    End Property
 
 
     Private Sub frmEditServer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -37,6 +60,11 @@
         Dim psServer As String = txtServerName.Text.Trim
         Dim psFolder As String = txtInstallPath.Text.Trim
         Dim piPort As Integer
+
+        If txtPassword.Text.Trim.Length < 6 Or txtServerName.Text.Trim.IndexOf(txtPassword.Text.Trim, StringComparison.InvariantCultureIgnoreCase) > -1 Then
+            MsgBox("Password must be at least six digits and may not contain server name.", giModalExclOK, "Invalid Password")
+            Exit Sub
+        End If
 
         Integer.TryParse(txtPort.Text.Trim, piPort)
 
@@ -85,7 +113,7 @@
         Using poDlg As New FolderBrowserDialog
             Dim psPath As String = txtDataPath.Text.Trim
             poDlg.SelectedPath = psPath
-            poDlg.Description = "Select the folder to store the Valheim world data files."
+            poDlg.Description = "Select the folder to store the Valheim world data files (note: program will add 'worlds' to this path automatically)."
             poDlg.ShowNewFolderButton = True
             If poDlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 txtDataPath.Text = poDlg.SelectedPath
@@ -104,7 +132,7 @@
     End Sub
 
     Private Sub txtServerName_TextChanged(sender As Object, e As EventArgs) Handles txtServerName.TextChanged
-        Me.Text = "Server - " & txtServerName.Name.Trim
+        Me.Text = "Server - " & txtServerName.Text.Trim
     End Sub
 
 

@@ -33,6 +33,7 @@
     Public Sub New(ByVal ConfigFileName As String)
         msFileName = ConfigFileName
         moServerData = New DataTable("ServerList")
+        moServerData.Columns.Add("GUID", GetType(String))
         moServerData.Columns.Add("ServerFolder", GetType(String))
         moServerData.Columns.Add("ServerName", GetType(String))
         moServerData.Columns.Add("ServerPort", GetType(Integer))
@@ -47,6 +48,9 @@
 
         Me.Clear()
     End Sub
+
+
+
 
 
     Public Sub Clear()

@@ -89,6 +89,129 @@
         End Using
     End Sub
 
+    Public Function GetIPAddresses() As List(Of System.Net.IPAddress)
+        Dim myIPAddresses As New List(Of System.Net.IPAddress)
+
+        Try
+            For Each netInterface As System.Net.NetworkInformation.NetworkInterface In System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces
+                If netInterface.NetworkInterfaceType <> System.Net.NetworkInformation.NetworkInterfaceType.Loopback AndAlso
+                    netInterface.NetworkInterfaceType <> System.Net.NetworkInformation.NetworkInterfaceType.Tunnel AndAlso
+                    netInterface.OperationalStatus = System.Net.NetworkInformation.OperationalStatus.Up Then
+
+                    For Each address As System.Net.NetworkInformation.IPAddressInformation In netInterface.GetIPProperties.UnicastAddresses
+                        myIPAddresses.Add(address.Address)
+                    Next
+                End If
+            Next
+            Return myIPAddresses
+        Catch
+            Return New List(Of System.Net.IPAddress)
+        End Try
+    End Function
+
+    Public Function FindPrivateIP(ByVal Addresses As List(Of System.Net.IPAddress)) As System.Net.IPAddress
+        Dim piIndex As Integer
+        Dim psIP As String
+        Dim piValue As Integer
+
+        ' http://www.faqs.org/rfcs/rfc1918.html defines "private" ip block as follows
+        '     10.0.0.0        -   10.255.255.255  (10/8 prefix)
+        '     172.16.0.0      -   172.31.255.255  (172.16/12 prefix)
+        '     192.168.0.0     -   192.168.255.255 (192.168/16 prefix)
+        '
+        If Addresses IsNot Nothing Then
+            For piIndex = 0 To Addresses.Count - 1
+                psIP = Addresses(piIndex).ToString.Trim
+                If psIP.StartsWith("10.") Then
+                    Return Addresses(piIndex)
+                Else
+                    If psIP.StartsWith("172.") Then
+                        If Integer.TryParse(psIP.Substring(4, 2), piValue) Then
+                            If piValue >= 16 And piValue <= 31 Then
+                                Return Addresses(piIndex)
+                            End If
+                        Else
+                            If psIP.StartsWith("192.168.") Then
+                                Return Addresses(piIndex)
+                            End If
+                        End If
+                    End If
+                End If
+            Next
+            ' if we get here then no local IP detected, just return the 1st one
+            Return Addresses(0)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function GetExternalIp() As String
+        Try
+            Dim ExternalIP As String
+            ExternalIP = (New System.Net.WebClient()).DownloadString("http://checkip.dyndns.org/")
+            ExternalIP = (New System.Text.RegularExpressions.Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")).Matches(ExternalIP)(0).ToString()
+            Return ExternalIP
+        Catch
+            Return String.Empty
+        End Try
+    End Function
+
+
+    Public Function FullDisplayElapsed(ByVal TotalSeconds As Long) As String
+
+        Dim piDays As Integer
+        Dim piHours As Integer
+        Dim piMins As Integer
+        Dim piSeconds As Long
+        Dim piCurr As Long
+        Dim psTemp As String
+
+        piCurr = TotalSeconds
+        piDays = piCurr \ 86400 ' (60 seconds * 60 mins in an hour times 24 hours in a day)
+        piCurr = piCurr - (piDays * 86400)
+        piHours = piCurr \ 3600 ' 3600 seconds in an hour
+        piCurr = piCurr - (piHours * 3600)
+        piMins = piCurr \ 60    ' 60 seconds in a minute
+        piCurr = piCurr - (piMins * 60)
+        piSeconds = piCurr
+
+        psTemp = ""
+        If piDays > 0 Then
+            If piHours > 0 Or piMins > 0 Then
+                psTemp = psTemp & IIf(piDays = 1, "1 day, ", Format(piDays, "#,##0") & " days, ")
+            Else
+                psTemp = psTemp & IIf(piDays = 1, "1 day", Format(piDays, "#,##0") & " days")
+            End If
+        End If
+        If piHours > 0 Then
+            If piMins > 0 Or piSeconds > 0 Then
+                If piSeconds > 0 Then
+                    psTemp = psTemp & Format(piHours, "#0") & IIf(piHours = 1, " hour, ", " hours, ")
+                Else
+                    psTemp = psTemp & Format(piHours, "#0") & IIf(piHours = 1, " hour and ", " hours and ")
+                End If
+            Else
+                psTemp = psTemp & Format(piHours, "#0") & IIf(piHours = 1, " hour", " hours")
+            End If
+        End If
+        If piMins > 0 Then
+            If piSeconds > 0 Then
+                psTemp = psTemp & Format(piMins, "#0") & IIf(piMins = 1, " minute and ", " minutes and ")
+            Else
+                psTemp = psTemp & Format(piMins, "#0") & IIf(piMins = 1, " minute", " minutes")
+            End If
+        End If
+        If piSeconds > 0 Then
+            psTemp = psTemp & Format(piSeconds, "#0") & IIf(piSeconds = 1, " second", " seconds")
+        Else
+            If psTemp = "" Then
+                psTemp = "<1 Second"
+            End If
+        End If
+        Return psTemp
+    End Function
+
+
 
 #Region " Safe Functions "
     Public Function SafeStr(ByVal Anything As Object, Optional ByVal bTrimIt As Boolean = True, Optional ByVal bUCase As Boolean = False, Optional ByVal bProperCase As Boolean = False) As String

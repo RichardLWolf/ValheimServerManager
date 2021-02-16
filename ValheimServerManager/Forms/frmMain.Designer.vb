@@ -30,17 +30,22 @@ Partial Class frmMain
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnStart = New System.Windows.Forms.ToolStripButton()
         Me.btnStop = New System.Windows.Forms.ToolStripButton()
+        Me.btnViewServerFolder = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnBackup = New System.Windows.Forms.ToolStripButton()
         Me.btnRestore = New System.Windows.Forms.ToolStripButton()
         Me.btnUpdate = New System.Windows.Forms.ToolStripButton()
         Me.btnAppFolder = New System.Windows.Forms.ToolStripButton()
         Me.lvwServers = New System.Windows.Forms.ListView()
+        Me.mnuPop = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.mnuPopInfo = New System.Windows.Forms.ToolStripMenuItem()
         Me.sstStatus = New System.Windows.Forms.StatusStrip()
         Me.tslStatus = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tslLocalIP = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tslExternalIP = New System.Windows.Forms.ToolStripStatusLabel()
         Me.imlListview = New System.Windows.Forms.ImageList(Me.components)
-        Me.btnViewServerFolder = New System.Windows.Forms.ToolStripButton()
         Me.tspMenu.SuspendLayout()
+        Me.mnuPop.SuspendLayout()
         Me.sstStatus.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -107,6 +112,15 @@ Partial Class frmMain
         Me.btnStop.Size = New System.Drawing.Size(36, 36)
         Me.btnStop.Text = "Stop Server"
         '
+        'btnViewServerFolder
+        '
+        Me.btnViewServerFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnViewServerFolder.Image = Global.ValheimServerManager.My.Resources.Resources.data_view
+        Me.btnViewServerFolder.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnViewServerFolder.Name = "btnViewServerFolder"
+        Me.btnViewServerFolder.Size = New System.Drawing.Size(36, 36)
+        Me.btnViewServerFolder.Text = "View server folder"
+        '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
@@ -152,23 +166,39 @@ Partial Class frmMain
         '
         'lvwServers
         '
+        Me.lvwServers.ContextMenuStrip = Me.mnuPop
         Me.lvwServers.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvwServers.HideSelection = False
         Me.lvwServers.Location = New System.Drawing.Point(0, 39)
         Me.lvwServers.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.lvwServers.Name = "lvwServers"
-        Me.lvwServers.Size = New System.Drawing.Size(812, 220)
+        Me.lvwServers.Size = New System.Drawing.Size(812, 216)
         Me.lvwServers.TabIndex = 1
         Me.lvwServers.UseCompatibleStateImageBehavior = False
+        '
+        'mnuPop
+        '
+        Me.mnuPop.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuPopInfo})
+        Me.mnuPop.Name = "mnuPop"
+        Me.mnuPop.Size = New System.Drawing.Size(229, 52)
+        '
+        'mnuPopInfo
+        '
+        Me.mnuPopInfo.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.mnuPopInfo.Image = Global.ValheimServerManager.My.Resources.Resources.server_connection
+        Me.mnuPopInfo.Name = "mnuPopInfo"
+        Me.mnuPopInfo.Size = New System.Drawing.Size(228, 26)
+        Me.mnuPopInfo.Text = "Get Steam Server Info"
         '
         'sstStatus
         '
         Me.sstStatus.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sstStatus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus})
-        Me.sstStatus.Location = New System.Drawing.Point(0, 259)
+        Me.sstStatus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus, Me.tslLocalIP, Me.tslExternalIP})
+        Me.sstStatus.Location = New System.Drawing.Point(0, 255)
         Me.sstStatus.Name = "sstStatus"
         Me.sstStatus.Padding = New System.Windows.Forms.Padding(2, 0, 21, 0)
-        Me.sstStatus.Size = New System.Drawing.Size(812, 26)
+        Me.sstStatus.ShowItemToolTips = True
+        Me.sstStatus.Size = New System.Drawing.Size(812, 30)
         Me.sstStatus.TabIndex = 2
         Me.sstStatus.Text = "Initializing"
         '
@@ -176,25 +206,35 @@ Partial Class frmMain
         '
         Me.tslStatus.Margin = New System.Windows.Forms.Padding(5, 3, 0, 2)
         Me.tslStatus.Name = "tslStatus"
-        Me.tslStatus.Size = New System.Drawing.Size(784, 21)
+        Me.tslStatus.Size = New System.Drawing.Size(678, 25)
         Me.tslStatus.Spring = True
         Me.tslStatus.Text = "Initializing..."
         Me.tslStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'tslLocalIP
+        '
+        Me.tslLocalIP.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left
+        Me.tslLocalIP.Image = Global.ValheimServerManager.My.Resources.Resources.PCI_card_network
+        Me.tslLocalIP.Name = "tslLocalIP"
+        Me.tslLocalIP.Size = New System.Drawing.Size(53, 25)
+        Me.tslLocalIP.Text = "n/a"
+        Me.tslLocalIP.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.tslLocalIP.ToolTipText = "Internal IP address"
+        '
+        'tslExternalIP
+        '
+        Me.tslExternalIP.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left
+        Me.tslExternalIP.Image = Global.ValheimServerManager.My.Resources.Resources.server_connection
+        Me.tslExternalIP.Name = "tslExternalIP"
+        Me.tslExternalIP.Size = New System.Drawing.Size(53, 25)
+        Me.tslExternalIP.Text = "n/a"
+        Me.tslExternalIP.ToolTipText = "External IP address"
         '
         'imlListview
         '
         Me.imlListview.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
         Me.imlListview.ImageSize = New System.Drawing.Size(16, 16)
         Me.imlListview.TransparentColor = System.Drawing.Color.Transparent
-        '
-        'btnViewServerFolder
-        '
-        Me.btnViewServerFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.btnViewServerFolder.Image = Global.ValheimServerManager.My.Resources.Resources.data_view
-        Me.btnViewServerFolder.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnViewServerFolder.Name = "btnViewServerFolder"
-        Me.btnViewServerFolder.Size = New System.Drawing.Size(36, 36)
-        Me.btnViewServerFolder.Text = "View server folder"
         '
         'frmMain
         '
@@ -211,6 +251,7 @@ Partial Class frmMain
         Me.Text = "VSM"
         Me.tspMenu.ResumeLayout(False)
         Me.tspMenu.PerformLayout()
+        Me.mnuPop.ResumeLayout(False)
         Me.sstStatus.ResumeLayout(False)
         Me.sstStatus.PerformLayout()
         Me.ResumeLayout(False)
@@ -235,4 +276,8 @@ Partial Class frmMain
     Friend WithEvents btnUpdate As ToolStripButton
     Friend WithEvents btnAppFolder As ToolStripButton
     Friend WithEvents btnViewServerFolder As ToolStripButton
+    Friend WithEvents tslLocalIP As ToolStripStatusLabel
+    Friend WithEvents tslExternalIP As ToolStripStatusLabel
+    Friend WithEvents mnuPop As ContextMenuStrip
+    Friend WithEvents mnuPopInfo As ToolStripMenuItem
 End Class

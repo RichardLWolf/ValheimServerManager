@@ -16,7 +16,7 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
@@ -51,6 +51,9 @@
     <ApplicationIcon>Resources\vsm.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SteamQueryNet, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SteamQueryNet.1.0.6\lib\netstandard2.0\SteamQueryNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -139,6 +142,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\data_view.png" />
     <None Include="Resources\folder_view.png" />
     <None Include="Resources\bullet_ball_glass_grey.png" />
@@ -158,6 +162,8 @@
     <None Include="Resources\add2.png" />
     <Content Include="Resources\icon_256.png" />
     <Content Include="Resources\icon_48.png" />
+    <None Include="Resources\server_connection.png" />
+    <None Include="Resources\PCI-card_network.png" />
     <Content Include="Resources\vsm.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

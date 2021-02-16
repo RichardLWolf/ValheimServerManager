@@ -80,7 +80,8 @@ Partial Class frmEditServer
         Me.txtWorldName.Name = "txtWorldName"
         Me.txtWorldName.Size = New System.Drawing.Size(170, 25)
         Me.txtWorldName.TabIndex = 3
-        Me.ToolTip1.SetToolTip(Me.txtWorldName, "Local world file name")
+        Me.ToolTip1.SetToolTip(Me.txtWorldName, "Local world file name on disk." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "You can switch between saved games with this sett" &
+        "ing.")
         '
         'Label3
         '
@@ -106,6 +107,7 @@ Partial Class frmEditServer
         Me.btnInstBrowse.Name = "btnInstBrowse"
         Me.btnInstBrowse.Size = New System.Drawing.Size(30, 30)
         Me.btnInstBrowse.TabIndex = 12
+        Me.ToolTip1.SetToolTip(Me.btnInstBrowse, "Browse for folder")
         Me.btnInstBrowse.UseVisualStyleBackColor = True
         '
         'Label4
@@ -160,6 +162,7 @@ Partial Class frmEditServer
         Me.btnSaveBrowse.Name = "btnSaveBrowse"
         Me.btnSaveBrowse.Size = New System.Drawing.Size(30, 30)
         Me.btnSaveBrowse.TabIndex = 15
+        Me.ToolTip1.SetToolTip(Me.btnSaveBrowse, "Browse for folder")
         Me.btnSaveBrowse.UseVisualStyleBackColor = True
         '
         'Label6
@@ -177,7 +180,8 @@ Partial Class frmEditServer
         Me.txtDataPath.Name = "txtDataPath"
         Me.txtDataPath.Size = New System.Drawing.Size(371, 25)
         Me.txtDataPath.TabIndex = 14
-        Me.ToolTip1.SetToolTip(Me.txtDataPath, "Folder on your local disk to store the world game files")
+        Me.ToolTip1.SetToolTip(Me.txtDataPath, "Folder on your local disk to store the world game files." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(NOTE:  The program wil" &
+        "l add ""worlds"" to this path" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "automatically, do not put it in your path).")
         '
         'btnSave
         '
@@ -186,7 +190,8 @@ Partial Class frmEditServer
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 32)
         Me.btnSave.TabIndex = 20
-        Me.btnSave.Text = "SA&VE"
+        Me.btnSave.Text = "INS&TALL"
+        Me.ToolTip1.SetToolTip(Me.btnSave, "Save settings and install server")
         Me.btnSave.UseVisualStyleBackColor = True
         '
         'btnCancel
