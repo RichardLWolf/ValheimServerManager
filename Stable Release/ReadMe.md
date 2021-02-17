@@ -8,6 +8,6 @@ You can start the main EXE directly, or add it to your Windows startup so it lau
 # Using The Program
 The tool buttons are pretty much self-explanitory, hover over the button for a tool-tip.  
 
-Left-clicking on a server entry will select it show you how long until reboot (not a "live" or running update, just at the point you clicked it).
+Left-clicking on a server entry will select it and show you how long until reboot (not a "live" or running update, just at the point you clicked it) if it's running.
 Right-clicking on a server will give you the option to perform a Steam query if the server is running.
 
