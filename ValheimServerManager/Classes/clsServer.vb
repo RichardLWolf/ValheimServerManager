@@ -431,18 +431,15 @@ Public Class clsServer
                     End If
                 Loop
                 If mbAbort Or pbRestartTime Then
-                    ' check for abort, if so kill the process 
+                    ' attempt to stop the game process, or kill it if it is not co-operating.
                     Try
-                        ' try to be nice first, give it a second to close out.
+                        ' try to be nice first, give it some time to close itself out.
                         If moServerProc IsNot Nothing AndAlso moServerProc.HasExited = False Then
                             moServerProc.CloseMainWindow()
                             moServerProc.Close()
-                            ptStartTime = DateTime.Now
-                            Do While DateTime.Now.Subtract(ptStartTime).TotalSeconds < 30 AndAlso moServerProc IsNot Nothing AndAlso moServerProc.HasExited = False
-                                System.Threading.Thread.Sleep(250)
-                            Loop
+                            moServerProc.WaitForExit(30000) ' give it 30 seconds
                         End If
-                        ' if we're still here, be a little more forcefull
+                        ' if the process is still running, be a little more forcefull
                         If moServerProc IsNot Nothing AndAlso moServerProc.HasExited = False Then
                             moServerProc.Kill()
                         End If
@@ -459,6 +456,8 @@ Public Class clsServer
                     miCurrState = StateVals.Stopped
                     RaiseEvent ServerStatus(Me)
                     goLogger.LogEntry("Scheduled restart for " & Me.FolderPath, EventLogEntryType.Information)
+                    mbAutoStart = False ' prevent backup or update block from restarting this thread
+                    System.Threading.Thread.Sleep(1000) ' let windows catch up
                     If mbBackup Then
                         goLogger.LogEntry("Beginning backup for " & Me.WorldDataFolder, EventLogEntryType.Information)
                         moWorkThread = New System.Threading.Thread(AddressOf PerformBackupData)
@@ -479,6 +478,7 @@ Public Class clsServer
                             System.Threading.Thread.Sleep(1000)
                         Loop
                     End If
+                    ' turn autostart back on so this thread gets restarted
                     mbAutoStart = True
                     mbAbort = False
                 End If
