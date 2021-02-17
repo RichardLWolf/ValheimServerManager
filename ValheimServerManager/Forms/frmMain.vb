@@ -10,23 +10,7 @@ Public Class frmMain
 
 
     Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
-        'frmAbout.Show(Me)
-
-        Dim psPorts As String = "5677-5679"  'String.Format("{0:#0}-{1:#0}", oServer.Port, oServer.Port + 2)
-        Dim psErr As String = ""
-        Dim Profile2Types As NetFwTypeLib.NET_FW_PROFILE_TYPE2_ = (NetFwTypeLib.NET_FW_PROFILE_TYPE2_.NET_FW_PROFILE2_DOMAIN Or NetFwTypeLib.NET_FW_PROFILE_TYPE2_.NET_FW_PROFILE2_PUBLIC)
-        If Not clsFireWall.CheckAddPortRule("Valheim Dedicated Server (TCP)", psPorts, clsFireWall.ProtocolType.Tcp, Profile2Types) Then
-                psErr = psErr & "Failed to add TCP port range " & psPorts & " to Windows Firewall." & vbCrLf
-            End If
-            If Not clsFireWall.CheckAddPortRule("Valheim Dedicated Server (UDP)", psPorts, clsFireWall.ProtocolType.Udp, Profile2Types) Then
-                psErr = psErr & "Failed to add UDP port range " & psPorts & " to Windows Firewall." & vbCrLf
-            End If
-            If psErr <> "" Then
-                MsgBox(psErr, giModalInfoOK, "Check Windows Firewall")
-            Else
-                MsgBox("Firewall opended", giModalInfoOK, "Windows Firewall")
-            End If
-
+        frmAbout.Show(Me)
     End Sub
 
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
@@ -371,7 +355,7 @@ Public Class frmMain
                     psErr = psErr & "Failed to add UDP port range " & psPorts & " to Windows Firewall." & vbCrLf
                 End If
                 If psErr <> "" Then
-                    psErr = psErr & "Most likely you are Not running this program elevated or are logged in as a Windows Limited User account." & vbCrLf
+                    psErr = psErr & vbCrLf & "Most likely you are not running this program elevated or are logged in as a Windows Limited User account." & vbCrLf & vbCrLf
                     psErr = psErr & "You will need to verfiy the Windows Firewall settings for this server manually."
                     MsgBox(psErr, giModalInfoOK, "Check Windows Firewall")
                 End If
