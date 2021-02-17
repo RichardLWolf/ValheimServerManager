@@ -13,7 +13,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyCompany("None")>
 <Assembly: AssemblyProduct("ValheimServerManager")>
 <Assembly: AssemblyCopyright("Copyright ©  2021")>
-<Assembly: AssemblyTrademark("Valheim is a trademark of Coffee Stain and Iron Gate.  Notice is cautionary and does not imply publication.")>
+<Assembly: AssemblyTrademark("Valheim is a trademark of Coffee Stain Publishing and Iron Gate AB.  Notice is cautionary and does not imply publication.")>
 
 <Assembly: ComVisible(False)>
 

@@ -35,6 +35,7 @@ Partial Class frmMain
         Me.btnBackup = New System.Windows.Forms.ToolStripButton()
         Me.btnRestore = New System.Windows.Forms.ToolStripButton()
         Me.btnUpdate = New System.Windows.Forms.ToolStripButton()
+        Me.btnAbout = New System.Windows.Forms.ToolStripButton()
         Me.btnAppFolder = New System.Windows.Forms.ToolStripButton()
         Me.lvwServers = New System.Windows.Forms.ListView()
         Me.mnuPop = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -53,7 +54,7 @@ Partial Class frmMain
         '
         Me.tspMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.tspMenu.ImageScalingSize = New System.Drawing.Size(32, 32)
-        Me.tspMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAdd, Me.btnEdit, Me.btnDelete, Me.ToolStripSeparator1, Me.btnStart, Me.btnStop, Me.btnViewServerFolder, Me.ToolStripSeparator2, Me.btnBackup, Me.btnRestore, Me.btnUpdate, Me.btnAppFolder})
+        Me.tspMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAdd, Me.btnEdit, Me.btnDelete, Me.ToolStripSeparator1, Me.btnStart, Me.btnStop, Me.btnViewServerFolder, Me.ToolStripSeparator2, Me.btnBackup, Me.btnRestore, Me.btnUpdate, Me.btnAbout, Me.btnAppFolder})
         Me.tspMenu.Location = New System.Drawing.Point(0, 0)
         Me.tspMenu.Name = "tspMenu"
         Me.tspMenu.Padding = New System.Windows.Forms.Padding(5, 0, 2, 0)
@@ -154,6 +155,17 @@ Partial Class frmMain
         Me.btnUpdate.Size = New System.Drawing.Size(36, 36)
         Me.btnUpdate.Text = "Update Server Files"
         '
+        'btnAbout
+        '
+        Me.btnAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.btnAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnAbout.Image = Global.ValheimServerManager.My.Resources.Resources.information2
+        Me.btnAbout.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnAbout.Name = "btnAbout"
+        Me.btnAbout.Size = New System.Drawing.Size(36, 36)
+        Me.btnAbout.Text = "About"
+        Me.btnAbout.ToolTipText = "About this app"
+        '
         'btnAppFolder
         '
         Me.btnAppFolder.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -180,7 +192,7 @@ Partial Class frmMain
         '
         Me.mnuPop.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuPopInfo})
         Me.mnuPop.Name = "mnuPop"
-        Me.mnuPop.Size = New System.Drawing.Size(229, 52)
+        Me.mnuPop.Size = New System.Drawing.Size(229, 30)
         '
         'mnuPopInfo
         '
@@ -280,4 +292,5 @@ Partial Class frmMain
     Friend WithEvents tslExternalIP As ToolStripStatusLabel
     Friend WithEvents mnuPop As ContextMenuStrip
     Friend WithEvents mnuPopInfo As ToolStripMenuItem
+    Friend WithEvents btnAbout As ToolStripButton
 End Class

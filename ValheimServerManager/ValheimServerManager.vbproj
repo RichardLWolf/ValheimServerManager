@@ -42,7 +42,7 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
@@ -110,8 +110,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\clsConfigInfo.vb" />
+    <Compile Include="Classes\clsFireWall.vb" />
     <Compile Include="Classes\clsLogger.vb" />
     <Compile Include="Classes\clsServer.vb" />
+    <Compile Include="Forms\frmAbout.Designer.vb">
+      <DependentUpon>frmAbout.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmAbout.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\frmEditServer.Designer.vb">
       <DependentUpon>frmEditServer.vb</DependentUpon>
     </Compile>
@@ -143,6 +150,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\frmAbout.resx">
+      <DependentUpon>frmAbout.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmEditServer.resx">
       <DependentUpon>frmEditServer.vb</DependentUpon>
     </EmbeddedResource>
@@ -167,6 +177,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="Resources\license.rtf" />
     <None Include="ValheimServerManager_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -204,7 +215,20 @@
     <Content Include="Resources\icon_48.png" />
     <None Include="Resources\server_connection.png" />
     <None Include="Resources\PCI-card_network.png" />
+    <None Include="Resources\License.txt" />
+    <None Include="Resources\information2.png" />
     <Content Include="Resources\vsm.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="NetFwTypeLib">
+      <Guid>{58FBCF7C-E7A9-467C-80B3-FC65E8FCCA08}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

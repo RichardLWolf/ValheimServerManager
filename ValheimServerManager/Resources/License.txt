@@ -1,0 +1,32 @@
+Software License
+
+Copyright (c) 2021 Richard L. Wolf
+
+This work is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 
+International agreement.
+
+Valheim is a trademark of Coffee Stain Publishing and Iron Gate AB.  Copyright notice is precautionary and does not imply publication.
+
+License Summary
+===============
+You are free to share (copy and reditribute the material in any medium or format) and adapt 
+(remix, transform, and build upon the material) under the following terms:
+
+* Attribution - You must give appropriate credit, provide a link to the license, 
+                and indicate if changes were made. You may do so in any reasonable manner, 
+				but not in any way that suggests the licensor endorses you or your use.
+
+* NonCommercial - You may not use the material for commercial purposes.
+
+* ShareAlike - If you remix, transform, or build upon the material, you must distribute 
+               your contributions under the same license as the original.
+
+See https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode for complete license text.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

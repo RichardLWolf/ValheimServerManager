@@ -1,4 +1,5 @@
-﻿Imports ValheimServerManager
+﻿Imports NetFwTypeLib
+Imports ValheimServerManager
 
 Public Class frmMain
     Private moLoggedErr As New List(Of Integer)
@@ -7,6 +8,26 @@ Public Class frmMain
 
 
 
+
+    Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
+        'frmAbout.Show(Me)
+
+        Dim psPorts As String = "5677-5679"  'String.Format("{0:#0}-{1:#0}", oServer.Port, oServer.Port + 2)
+        Dim psErr As String = ""
+        Dim Profile2Types As NetFwTypeLib.NET_FW_PROFILE_TYPE2_ = (NetFwTypeLib.NET_FW_PROFILE_TYPE2_.NET_FW_PROFILE2_DOMAIN Or NetFwTypeLib.NET_FW_PROFILE_TYPE2_.NET_FW_PROFILE2_PUBLIC)
+        If Not clsFireWall.CheckAddPortRule("Valheim Dedicated Server (TCP)", psPorts, clsFireWall.ProtocolType.Tcp, Profile2Types) Then
+                psErr = psErr & "Failed to add TCP port range " & psPorts & " to Windows Firewall." & vbCrLf
+            End If
+            If Not clsFireWall.CheckAddPortRule("Valheim Dedicated Server (UDP)", psPorts, clsFireWall.ProtocolType.Udp, Profile2Types) Then
+                psErr = psErr & "Failed to add UDP port range " & psPorts & " to Windows Firewall." & vbCrLf
+            End If
+            If psErr <> "" Then
+                MsgBox(psErr, giModalInfoOK, "Check Windows Firewall")
+            Else
+                MsgBox("Firewall opended", giModalInfoOK, "Windows Firewall")
+            End If
+
+    End Sub
 
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
         If foInstallThread IsNot Nothing Then
@@ -338,6 +359,23 @@ Public Class frmMain
                 goConfig.ServerData.Rows.Add(poDR)
                 pbContinue = goConfig.SaveConfigFile()
             End If
+            ' check firewall 
+            If pbContinue Then
+                Dim psPorts As String = String.Format("{0:#0}-{1:#0}", oServer.Port, oServer.Port + 2)
+                Dim psErr As String = ""
+                Dim Profile2Types As NetFwTypeLib.NET_FW_PROFILE_TYPE2_ = (NET_FW_PROFILE_TYPE2_.NET_FW_PROFILE2_DOMAIN Or NET_FW_PROFILE_TYPE2_.NET_FW_PROFILE2_PUBLIC)
+                If Not clsFireWall.CheckAddPortRule("Valheim Dedicated Server (TCP " & psPorts & ")", psPorts, clsFireWall.ProtocolType.Tcp, Profile2Types) Then
+                    psErr = psErr & "Failed to add TCP port range " & psPorts & " to Windows Firewall." & vbCrLf
+                End If
+                If Not clsFireWall.CheckAddPortRule("Valheim Dedicated Server (UDP " & psPorts & ")", psPorts, clsFireWall.ProtocolType.Udp, Profile2Types) Then
+                    psErr = psErr & "Failed to add UDP port range " & psPorts & " to Windows Firewall." & vbCrLf
+                End If
+                If psErr <> "" Then
+                    psErr = psErr & "Most likely you are Not running this program elevated or are logged in as a Windows Limited User account." & vbCrLf
+                    psErr = psErr & "You will need to verfiy the Windows Firewall settings for this server manually."
+                    MsgBox(psErr, giModalInfoOK, "Check Windows Firewall")
+                End If
+            End If
             If pbContinue Then
                 Call AddToListView(oServer)
             End If
@@ -351,6 +389,10 @@ Public Class frmMain
             foInstallThread = Nothing
         End Try
     End Sub
+
+
+
+
 
     Private Sub ServerStatus(ByVal oServer As clsServer)
         Call UpdateListView(oServer)
@@ -561,7 +603,7 @@ Public Class frmMain
             lvwServers.SuspendLayout()
             Dim poLvw As New ListViewItem
             poLvw.Tag = oServer
-            poLvw.Text = ""
+            poLvw.Text = "Undetermined"
             poLvw.ImageKey = "clear"
             poLvw.SubItems.Add(IIf(oServer.PID = 0, "", oServer.PID))
             poLvw.SubItems.Add(oServer.ExeVersion)
@@ -630,7 +672,6 @@ Public Class frmMain
             Next
         End If
     End Sub
-
 
 End Class
 
