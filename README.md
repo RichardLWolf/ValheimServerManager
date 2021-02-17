@@ -5,5 +5,5 @@ and game files from Steam to start the server.
 The app can stop the game server once per day at at time of your choosing for an automated backup (ZIP archive) of the world data files and/or update 
 the game program files at the same time.
 
-# Requirments
+# Requirements
 Compiled for 64-bit CPU/Windows and the Microsoft .NET Framework 4.6.2
