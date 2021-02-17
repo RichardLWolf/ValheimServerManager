@@ -1,4 +1,6 @@
 # ValheimServerManager
+![alt text](https://github.com/RichardLWolf/ValheimServerManager/blob/master/screencap.png?raw=true)
+
 This app automates the launching and monitoring of one or more Valhiem dedicated servers.  It will also install the necessary SteamCmd.exe program 
 and game files from Steam to start the server.
 
