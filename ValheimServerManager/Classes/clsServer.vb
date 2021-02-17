@@ -430,6 +430,7 @@ Public Class clsServer
                         End If
                     End If
                 Loop
+                goLogger.LogEntry("Wait thread " & Me.ServerName & " ending: Abort(" & mbAbort & ") Alive(" & mbAlive & ") Restart(" & pbRestartTime & ")", EventLogEntryType.Information)
                 If mbAbort Or pbRestartTime Then
                     ' attempt to stop the game process, or kill it if it is not co-operating.
                     Try
