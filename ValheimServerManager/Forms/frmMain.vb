@@ -418,6 +418,7 @@ Public Class frmMain
         btnBackup.Enabled = False
         btnRestore.Enabled = False
         btnUpdate.Enabled = False
+        btnReinstall.Enabled = False
 
         If lvwServers.SelectedItems.Count > 0 Then
             Call UpdateStatus("Ready")
@@ -444,6 +445,7 @@ Public Class frmMain
                         btnBackup.Enabled = True
                     End If
                     btnUpdate.Enabled = True
+                    btnReinstall.Enabled = True
                 End If
             End If
         End If
