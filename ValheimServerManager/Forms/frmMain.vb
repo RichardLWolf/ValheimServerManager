@@ -123,7 +123,7 @@ Public Class frmMain
         If lvwServers.SelectedItems.Count > 0 Then
             Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
             If poTag IsNot Nothing Then
-                If poTag.CurrentState = clsServer.StateVals.Stopped Then
+                If poTag.CurrentState = clsServer.StateVals.Stopped Or poTag.CurrentState = clsServer.StateVals.Undetermined Then
                     poTag.AutoStart = True
                     poTag.StartMonitor()
                 End If

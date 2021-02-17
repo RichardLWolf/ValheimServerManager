@@ -364,31 +364,37 @@ Public Class clsServer
             mbAbort = False
             ' is the server running already?
             If CheckForProcess() = False Then
-                Dim processStartInfo As System.Diagnostics.ProcessStartInfo
-                Dim psArgLine As String
+                If System.IO.File.Exists(BuildProcessExeName()) Then
+                    Dim processStartInfo As System.Diagnostics.ProcessStartInfo
+                    Dim psArgLine As String
 
-                miCurrState = StateVals.Starting
-                RaiseEvent ServerStatus(Me)
+                    miCurrState = StateVals.Starting
+                    RaiseEvent ServerStatus(Me)
 
-                'valheim_server -nographics -batchmode -name "CompanyOfWolves" -port 7810 -world "worldcow" -password "CompanyOfWolves!" -savedir "C:\Valheim Server\savedata"
-                psArgLine = "-nographics -batchmode -name " & Chr(34) & Me.ServerName & Chr(34)
-                psArgLine = psArgLine & " -port " & Me.Port & " -world " & Chr(34) & Me.WorldName & Chr(34)
-                psArgLine = psArgLine & " -password " & Chr(34) & Me.Password & Chr(34)
-                psArgLine = psArgLine & " -savedir " & Chr(34) & Me.SaveDir & Chr(34)
+                    'valheim_server -nographics -batchmode -name "CompanyOfWolves" -port 7810 -world "worldcow" -password "CompanyOfWolves!" -savedir "C:\Valheim Server\savedata"
+                    psArgLine = "-nographics -batchmode -name " & Chr(34) & Me.ServerName & Chr(34)
+                    psArgLine = psArgLine & " -port " & Me.Port & " -world " & Chr(34) & Me.WorldName & Chr(34)
+                    psArgLine = psArgLine & " -password " & Chr(34) & Me.Password & Chr(34)
+                    psArgLine = psArgLine & " -savedir " & Chr(34) & Me.SaveDir & Chr(34)
 
-                processStartInfo = New System.Diagnostics.ProcessStartInfo()
-                processStartInfo.FileName = Chr(34) & BuildProcessExeName() & Chr(34)
-                processStartInfo.Arguments = psArgLine
-                processStartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
-                processStartInfo.UseShellExecute = False
-                processStartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Me.FolderPath)
-                processStartInfo.EnvironmentVariables.Add("SteamAppId", "892970")
-                moServerProc = System.Diagnostics.Process.Start(processStartInfo)
+                    processStartInfo = New System.Diagnostics.ProcessStartInfo()
+                    processStartInfo.FileName = Chr(34) & BuildProcessExeName() & Chr(34)
+                    processStartInfo.Arguments = psArgLine
+                    processStartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
+                    processStartInfo.UseShellExecute = False
+                    processStartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Me.FolderPath)
+                    processStartInfo.EnvironmentVariables.Add("SteamAppId", "892970")
+                    moServerProc = System.Diagnostics.Process.Start(processStartInfo)
+                Else
+                    goLogger.LogError("clsServer.MonitorServer", "Missing server executable file: " & BuildProcessExeName())
+                    mbAbort = True
+                    mbRestart = False
+                End If
             Else
                 miCurrState = StateVals.Starting
                 RaiseEvent ServerStatus(Me)
             End If
-            If moServerProc IsNot Nothing Then
+            If moServerProc IsNot Nothing And Not mbAbort Then
                 ' see if we can query the server
                 mbAlive = False
                 ptStartTime = DateTime.Now
