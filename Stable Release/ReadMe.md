@@ -5,6 +5,6 @@ Also note that the program does not mess with your router, you will still be res
 # Running The Program
 You can start the main EXE directly, or add it to your Windows startup so it launches on reboot.  The program does not have to be run as Admin, but if you want it to add firewall entries during installation then you should "Run As Administrator" during that time.
 
-#Using The Program
+# Using The Program
 The tool buttons are pretty much self-explanitory, hover over the button for a tool-tip.  Clicking on a server entry will show you how long until reboot (not a "live" or running update, just at the point you clicked it).
 
