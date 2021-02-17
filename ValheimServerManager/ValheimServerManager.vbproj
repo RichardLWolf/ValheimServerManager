@@ -211,6 +211,7 @@
     <None Include="Resources\delete2.png" />
     <None Include="Resources\pencil2.png" />
     <None Include="Resources\add2.png" />
+    <None Include="Resources\down_plus.png" />
     <Content Include="Resources\icon_256.png" />
     <Content Include="Resources\icon_48.png" />
     <None Include="Resources\server_connection.png" />

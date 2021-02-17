@@ -163,6 +163,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property down_plus() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("down_plus", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property eye() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("eye", resourceCulture)
@@ -228,13 +238,12 @@ Namespace My.Resources
         '''This work is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 
         '''International agreement.
         '''
+        '''Valheim is a trademark of Coffee Stain Publishing and Iron Gate AB.  Copyright notice is precautionary and does not imply publication.
+        '''
         '''License Summary
         '''===============
         '''You are free to share (copy and reditribute the material in any medium or format) and adapt 
-        '''(remix, transform, and build upon the material) under the following terms:
-        '''
-        '''* Attribution - You must give appropriate credit, provide a link to the license, 
-        '''                and indicate if changes were made [rest of string was truncated]&quot;;.
+        '''(remix, transform, and build upon the material) under the following term [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property License() As String
             Get
@@ -289,7 +298,7 @@ Namespace My.Resources
         '''\pard\sa200\sl276\slmult1\cf1\b\f0\fs40\lang9 Software License\b0\fs19\par
         '''Copyright (c) 2021 Richard L. Wolf\par
         '''This work is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International agreement.\par
-        '''Valheim is a trademark of Coffee Stain and Iron Gate  [rest of string was truncated]&quot;;.
+        '''Valheim is a trademark of Coffee Stain Publishing and [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property RTF_License() As String
             Get

@@ -34,9 +34,11 @@ Partial Class frmMain
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnBackup = New System.Windows.Forms.ToolStripButton()
         Me.btnRestore = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnUpdate = New System.Windows.Forms.ToolStripButton()
         Me.btnAbout = New System.Windows.Forms.ToolStripButton()
         Me.btnAppFolder = New System.Windows.Forms.ToolStripButton()
+        Me.btnReinstall = New System.Windows.Forms.ToolStripButton()
         Me.lvwServers = New System.Windows.Forms.ListView()
         Me.mnuPop = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuPopInfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -54,7 +56,7 @@ Partial Class frmMain
         '
         Me.tspMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.tspMenu.ImageScalingSize = New System.Drawing.Size(32, 32)
-        Me.tspMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAdd, Me.btnEdit, Me.btnDelete, Me.ToolStripSeparator1, Me.btnStart, Me.btnStop, Me.btnViewServerFolder, Me.ToolStripSeparator2, Me.btnBackup, Me.btnRestore, Me.btnUpdate, Me.btnAbout, Me.btnAppFolder})
+        Me.tspMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAdd, Me.btnEdit, Me.btnDelete, Me.ToolStripSeparator1, Me.btnStart, Me.btnStop, Me.btnViewServerFolder, Me.ToolStripSeparator2, Me.btnBackup, Me.btnRestore, Me.ToolStripSeparator3, Me.btnUpdate, Me.btnAbout, Me.btnAppFolder, Me.btnReinstall})
         Me.tspMenu.Location = New System.Drawing.Point(0, 0)
         Me.tspMenu.Name = "tspMenu"
         Me.tspMenu.Padding = New System.Windows.Forms.Padding(5, 0, 2, 0)
@@ -146,6 +148,12 @@ Partial Class frmMain
         Me.btnRestore.Size = New System.Drawing.Size(36, 36)
         Me.btnRestore.Text = "Restore From Backup"
         '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 39)
+        '
         'btnUpdate
         '
         Me.btnUpdate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -175,6 +183,15 @@ Partial Class frmMain
         Me.btnAppFolder.Name = "btnAppFolder"
         Me.btnAppFolder.Size = New System.Drawing.Size(36, 36)
         Me.btnAppFolder.Text = "View app folder"
+        '
+        'btnReinstall
+        '
+        Me.btnReinstall.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnReinstall.Image = Global.ValheimServerManager.My.Resources.Resources.down_plus
+        Me.btnReinstall.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnReinstall.Name = "btnReinstall"
+        Me.btnReinstall.Size = New System.Drawing.Size(36, 36)
+        Me.btnReinstall.Text = "Full Reinstall"
         '
         'lvwServers
         '
@@ -293,4 +310,6 @@ Partial Class frmMain
     Friend WithEvents mnuPop As ContextMenuStrip
     Friend WithEvents mnuPopInfo As ToolStripMenuItem
     Friend WithEvents btnAbout As ToolStripButton
+    Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
+    Friend WithEvents btnReinstall As ToolStripButton
 End Class

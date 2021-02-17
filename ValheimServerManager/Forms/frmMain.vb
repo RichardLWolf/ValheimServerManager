@@ -97,6 +97,19 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub btnReinstall_Click(sender As Object, e As EventArgs) Handles btnReinstall.Click
+        If lvwServers.SelectedItems.Count > 0 Then
+            Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
+            If poTag IsNot Nothing Then
+                If poTag.CurrentState = clsServer.StateVals.Stopped Or poTag.CurrentState = clsServer.StateVals.Undetermined Then
+                    foInstallThread = New System.Threading.Thread(AddressOf InstallServer)
+                    foInstallThread.IsBackground = True
+                    foInstallThread.Start(poTag)
+                End If
+            End If
+        End If
+    End Sub
+
     Private Sub btnRestore_Click(sender As Object, e As EventArgs) Handles btnRestore.Click
         If lvwServers.SelectedItems.Count > 0 Then
             Dim poTag As clsServer = lvwServers.SelectedItems(0).Tag
@@ -237,9 +250,21 @@ Public Class frmMain
 
     Private Sub ServerAdd_EditComplete(SaveChanges As Boolean, ByRef oServ As clsServer)
         If SaveChanges Then
-            foInstallThread = New System.Threading.Thread(AddressOf InstallServer)
-            foInstallThread.IsBackground = True
-            foInstallThread.Start(oServ)
+            Dim pbInstall As Boolean = True
+            ' see if we need to install tis
+            If System.IO.Directory.Exists(oServ.FolderPath) Then
+                ' already there is the progrma there?
+                If oServ.HasSteamCmd Then
+                    If MsgBox("There may already be game files at the " & oServ.FolderPath & " folder." & vbCrLf & vbCrLf & "Proceed with installation?", giModalExclYesNo, "Existing Files") = MsgBoxResult.No Then
+                        pbInstall = False
+                    End If
+                End If
+            End If
+            If pbInstall Then
+                foInstallThread = New System.Threading.Thread(AddressOf InstallServer)
+                foInstallThread.IsBackground = True
+                foInstallThread.Start(oServ)
+            End If
         End If
     End Sub
 
