@@ -1,5 +1,5 @@
 # Install Files
-Just extract the files into a folder or the same folder where you wish to have the server located.  Note that the program **requires the .NET Framework 4.6 or higher but does not supply it.**
+Just extract the files into a folder or the same folder where you wish to have the server located.  Note that the program **requires the .NET Framework 4.6.2 or higher but does not supply it.**
 Also note that the program does not mess with your router, you will still be responsible for port-forwarding the desired game ports through your own firewall.
 
 # Running The Program
