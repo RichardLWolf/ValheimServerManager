@@ -39,6 +39,7 @@ Partial Class frmMain
         Me.btnAbout = New System.Windows.Forms.ToolStripButton()
         Me.btnAppFolder = New System.Windows.Forms.ToolStripButton()
         Me.btnReinstall = New System.Windows.Forms.ToolStripButton()
+        Me.btnViewLog = New System.Windows.Forms.ToolStripButton()
         Me.lvwServers = New System.Windows.Forms.ListView()
         Me.mnuPop = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuPopInfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -56,7 +57,7 @@ Partial Class frmMain
         '
         Me.tspMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.tspMenu.ImageScalingSize = New System.Drawing.Size(32, 32)
-        Me.tspMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAdd, Me.btnEdit, Me.btnDelete, Me.ToolStripSeparator1, Me.btnStart, Me.btnStop, Me.btnViewServerFolder, Me.ToolStripSeparator2, Me.btnBackup, Me.btnRestore, Me.ToolStripSeparator3, Me.btnUpdate, Me.btnAbout, Me.btnAppFolder, Me.btnReinstall})
+        Me.tspMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAdd, Me.btnEdit, Me.btnDelete, Me.ToolStripSeparator1, Me.btnStart, Me.btnStop, Me.btnViewServerFolder, Me.ToolStripSeparator2, Me.btnBackup, Me.btnRestore, Me.ToolStripSeparator3, Me.btnUpdate, Me.btnAbout, Me.btnAppFolder, Me.btnReinstall, Me.btnViewLog})
         Me.tspMenu.Location = New System.Drawing.Point(0, 0)
         Me.tspMenu.Name = "tspMenu"
         Me.tspMenu.Padding = New System.Windows.Forms.Padding(5, 0, 2, 0)
@@ -193,6 +194,16 @@ Partial Class frmMain
         Me.btnReinstall.Size = New System.Drawing.Size(36, 36)
         Me.btnReinstall.Text = "Full Reinstall"
         '
+        'btnViewLog
+        '
+        Me.btnViewLog.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.btnViewLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnViewLog.Image = Global.ValheimServerManager.My.Resources.Resources.notebook
+        Me.btnViewLog.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnViewLog.Name = "btnViewLog"
+        Me.btnViewLog.Size = New System.Drawing.Size(36, 36)
+        Me.btnViewLog.Text = "View app error log"
+        '
         'lvwServers
         '
         Me.lvwServers.ContextMenuStrip = Me.mnuPop
@@ -312,4 +323,5 @@ Partial Class frmMain
     Friend WithEvents btnAbout As ToolStripButton
     Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
     Friend WithEvents btnReinstall As ToolStripButton
+    Friend WithEvents btnViewLog As ToolStripButton
 End Class

@@ -178,6 +178,9 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub btnViewLog_Click(sender As Object, e As EventArgs) Handles btnViewLog.Click
+        frmViewLog.Show(Me)
+    End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = My.Resources.vsm
