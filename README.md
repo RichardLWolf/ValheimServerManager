@@ -11,4 +11,4 @@ the game program files at the same time.  Currently the app keeps the most recen
 Compiled for 64-bit CPU/Windows and the Microsoft .NET Framework 4.6.2
 
 # Download
-You can download the [Install Archive](https://github.com/RichardLWolf/ValheimServerManager/blob/master/Stable%20Release/ValheimServerManager.zip) from the "Stable Release" folder above.  See [the install readme.md file](https://github.com/RichardLWolf/ValheimServerManager/blob/master/Stable%20Release/ReadMe.md) for more information on installation/use.
+You can download the [Install Archive](https://github.com/RichardLWolf/ValheimServerManager/raw/master/Stable%20Release/ValheimServerManager.zip) from the "Stable Release" folder above.  See [the install readme.md file](https://github.com/RichardLWolf/ValheimServerManager/blob/master/Stable%20Release/ReadMe.md) for more information on installation/use.
