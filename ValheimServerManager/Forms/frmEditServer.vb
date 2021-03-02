@@ -9,7 +9,8 @@
         foServ = oServ
 
         foOrigServ = New clsServer(oServ.BackupPath, oServ.FolderPath, oServ.ServerName, oServ.Port, oServ.WorldName _
-                                   , oServ.Password, oServ.SaveDir, oServ.UpdateServer, oServ.RestartServer, oServ.BackupServer, oServ.RestartHour, oServ.RestartMin)
+                                   , oServ.Password, oServ.SaveDir, oServ.UpdateServer, oServ.RestartServer, oServ.PublicFlag _
+                                   , oServ.BackupServer, oServ.RestartHour, oServ.RestartMin)
         foOrigServ.CreationGUID = oServ.CreationGUID
 
         txtServerName.Text = foServ.ServerName
@@ -18,6 +19,7 @@
         txtPort.Text = foServ.Port
         txtInstallPath.Text = foServ.FolderPath
         txtDataPath.Text = foServ.SaveDir
+        chkPublic.Checked = foServ.PublicFlag
         chkRestart.Checked = foServ.RestartServer
         chkUpdate.Checked = foServ.UpdateServer
         chkBackup.Checked = foServ.BackupServer
@@ -74,6 +76,7 @@
         foServ.WorldName = txtWorldName.Text.Trim
         foServ.Password = txtPassword.Text.Trim
         foServ.SaveDir = txtDataPath.Text.Trim
+        foServ.PublicFlag = chkPublic.Checked
         foServ.RestartServer = chkRestart.Checked
         foServ.BackupServer = chkBackup.Checked
         foServ.UpdateServer = chkUpdate.Checked

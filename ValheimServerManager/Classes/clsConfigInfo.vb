@@ -45,6 +45,7 @@
         moServerData.Columns.Add("RestartHour", GetType(Integer))
         moServerData.Columns.Add("RestartMin", GetType(Integer))
         moServerData.Columns.Add("Backup", GetType(Boolean))
+        moServerData.Columns.Add("Public", GetType(Boolean))
 
         Me.Clear()
     End Sub

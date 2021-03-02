@@ -46,6 +46,7 @@ Partial Class frmEditServer
         Me.chkBackup = New System.Windows.Forms.CheckBox()
         Me.btnShowHide = New System.Windows.Forms.Button()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.chkPublic = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'txtServerName
@@ -89,7 +90,7 @@ Partial Class frmEditServer
         Me.Label3.Location = New System.Drawing.Point(12, 153)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(111, 17)
-        Me.Label3.TabIndex = 10
+        Me.Label3.TabIndex = 11
         Me.Label3.Text = "&Installation Folder"
         '
         'txtInstallPath
@@ -97,7 +98,7 @@ Partial Class frmEditServer
         Me.txtInstallPath.Location = New System.Drawing.Point(15, 173)
         Me.txtInstallPath.Name = "txtInstallPath"
         Me.txtInstallPath.Size = New System.Drawing.Size(371, 25)
-        Me.txtInstallPath.TabIndex = 11
+        Me.txtInstallPath.TabIndex = 12
         Me.ToolTip1.SetToolTip(Me.txtInstallPath, "Folder on your local disk to install the program")
         '
         'btnInstBrowse
@@ -106,7 +107,7 @@ Partial Class frmEditServer
         Me.btnInstBrowse.Location = New System.Drawing.Point(392, 169)
         Me.btnInstBrowse.Name = "btnInstBrowse"
         Me.btnInstBrowse.Size = New System.Drawing.Size(30, 30)
-        Me.btnInstBrowse.TabIndex = 12
+        Me.btnInstBrowse.TabIndex = 13
         Me.ToolTip1.SetToolTip(Me.btnInstBrowse, "Browse for folder")
         Me.btnInstBrowse.UseVisualStyleBackColor = True
         '
@@ -116,7 +117,7 @@ Partial Class frmEditServer
         Me.Label4.Location = New System.Drawing.Point(12, 105)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(32, 17)
-        Me.Label4.TabIndex = 7
+        Me.Label4.TabIndex = 8
         Me.Label4.Text = "P&ort"
         '
         'txtPort
@@ -124,7 +125,7 @@ Partial Class frmEditServer
         Me.txtPort.Location = New System.Drawing.Point(15, 125)
         Me.txtPort.Name = "txtPort"
         Me.txtPort.Size = New System.Drawing.Size(108, 25)
-        Me.txtPort.TabIndex = 8
+        Me.txtPort.TabIndex = 9
         Me.ToolTip1.SetToolTip(Me.txtPort, "Game port (query port is this value PLUS ONE).")
         '
         'lblPortRange
@@ -133,7 +134,7 @@ Partial Class frmEditServer
         Me.lblPortRange.Location = New System.Drawing.Point(129, 128)
         Me.lblPortRange.Name = "lblPortRange"
         Me.lblPortRange.Size = New System.Drawing.Size(74, 17)
-        Me.lblPortRange.TabIndex = 9
+        Me.lblPortRange.TabIndex = 10
         Me.lblPortRange.Text = "invaild port"
         Me.lblPortRange.UseMnemonic = False
         '
@@ -161,7 +162,7 @@ Partial Class frmEditServer
         Me.btnSaveBrowse.Location = New System.Drawing.Point(392, 221)
         Me.btnSaveBrowse.Name = "btnSaveBrowse"
         Me.btnSaveBrowse.Size = New System.Drawing.Size(30, 30)
-        Me.btnSaveBrowse.TabIndex = 15
+        Me.btnSaveBrowse.TabIndex = 16
         Me.ToolTip1.SetToolTip(Me.btnSaveBrowse, "Browse for folder")
         Me.btnSaveBrowse.UseVisualStyleBackColor = True
         '
@@ -171,7 +172,7 @@ Partial Class frmEditServer
         Me.Label6.Location = New System.Drawing.Point(12, 201)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(107, 17)
-        Me.Label6.TabIndex = 13
+        Me.Label6.TabIndex = 14
         Me.Label6.Text = "&Save Data Folder"
         '
         'txtDataPath
@@ -179,7 +180,7 @@ Partial Class frmEditServer
         Me.txtDataPath.Location = New System.Drawing.Point(15, 221)
         Me.txtDataPath.Name = "txtDataPath"
         Me.txtDataPath.Size = New System.Drawing.Size(371, 25)
-        Me.txtDataPath.TabIndex = 14
+        Me.txtDataPath.TabIndex = 15
         Me.ToolTip1.SetToolTip(Me.txtDataPath, "Folder on your local disk to store the world game files." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(NOTE:  The program wil" &
         "l add ""worlds"" to this path" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "automatically, do not put it in your path).")
         '
@@ -189,7 +190,7 @@ Partial Class frmEditServer
         Me.btnSave.Location = New System.Drawing.Point(208, 337)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 32)
-        Me.btnSave.TabIndex = 20
+        Me.btnSave.TabIndex = 21
         Me.btnSave.Text = "INS&TALL"
         Me.ToolTip1.SetToolTip(Me.btnSave, "Save settings and install server")
         Me.btnSave.UseVisualStyleBackColor = True
@@ -200,7 +201,7 @@ Partial Class frmEditServer
         Me.btnCancel.Location = New System.Drawing.Point(312, 337)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 32)
-        Me.btnCancel.TabIndex = 21
+        Me.btnCancel.TabIndex = 22
         Me.btnCancel.Text = "&CANCEL"
         Me.btnCancel.UseVisualStyleBackColor = True
         '
@@ -210,7 +211,7 @@ Partial Class frmEditServer
         Me.chkRestart.Location = New System.Drawing.Point(15, 263)
         Me.chkRestart.Name = "chkRestart"
         Me.chkRestart.Size = New System.Drawing.Size(115, 21)
-        Me.chkRestart.TabIndex = 16
+        Me.chkRestart.TabIndex = 17
         Me.chkRestart.Text = "&Restart Daily at"
         Me.ToolTip1.SetToolTip(Me.chkRestart, "Check to have the server restart once per day at this time")
         Me.chkRestart.UseVisualStyleBackColor = True
@@ -222,7 +223,7 @@ Partial Class frmEditServer
         Me.dteRestartTime.Location = New System.Drawing.Point(136, 259)
         Me.dteRestartTime.Name = "dteRestartTime"
         Me.dteRestartTime.Size = New System.Drawing.Size(108, 25)
-        Me.dteRestartTime.TabIndex = 17
+        Me.dteRestartTime.TabIndex = 18
         '
         'chkUpdate
         '
@@ -230,7 +231,7 @@ Partial Class frmEditServer
         Me.chkUpdate.Location = New System.Drawing.Point(250, 263)
         Me.chkUpdate.Name = "chkUpdate"
         Me.chkUpdate.Size = New System.Drawing.Size(134, 21)
-        Me.chkUpdate.TabIndex = 18
+        Me.chkUpdate.TabIndex = 19
         Me.chkUpdate.Text = "&Update game files"
         Me.ToolTip1.SetToolTip(Me.chkUpdate, "Check to force game file update every restart")
         Me.chkUpdate.UseVisualStyleBackColor = True
@@ -241,7 +242,7 @@ Partial Class frmEditServer
         Me.chkBackup.Location = New System.Drawing.Point(250, 290)
         Me.chkBackup.Name = "chkBackup"
         Me.chkBackup.Size = New System.Drawing.Size(137, 21)
-        Me.chkBackup.TabIndex = 19
+        Me.chkBackup.TabIndex = 20
         Me.chkBackup.Text = "&Backup Game Data"
         Me.ToolTip1.SetToolTip(Me.chkBackup, "Check to backup the world files while the server is down.")
         Me.chkBackup.UseVisualStyleBackColor = True
@@ -256,11 +257,22 @@ Partial Class frmEditServer
         Me.ToolTip1.SetToolTip(Me.btnShowHide, "Show/hide password")
         Me.btnShowHide.UseVisualStyleBackColor = True
         '
+        'chkPublic
+        '
+        Me.chkPublic.AutoSize = True
+        Me.chkPublic.Location = New System.Drawing.Point(298, 79)
+        Me.chkPublic.Name = "chkPublic"
+        Me.chkPublic.Size = New System.Drawing.Size(102, 21)
+        Me.chkPublic.TabIndex = 7
+        Me.chkPublic.Text = "&Pu&blic Server"
+        Me.chkPublic.UseVisualStyleBackColor = True
+        '
         'frmEditServer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 17.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(426, 381)
+        Me.Controls.Add(Me.chkPublic)
         Me.Controls.Add(Me.btnShowHide)
         Me.Controls.Add(Me.chkBackup)
         Me.Controls.Add(Me.chkUpdate)
@@ -318,4 +330,5 @@ Partial Class frmEditServer
     Friend WithEvents chkBackup As CheckBox
     Friend WithEvents btnShowHide As Button
     Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents chkPublic As CheckBox
 End Class

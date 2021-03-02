@@ -24,6 +24,7 @@ Public Class clsServer
     Private msWorldName As String
     Private msPass As String
     Private msSaveDir As String
+    Private mbPublicFlag As Boolean
     Private mbUpdate As Boolean
     Private mbRestart As Boolean
     Private mbBackup As Boolean
@@ -113,6 +114,14 @@ Public Class clsServer
         End Set
     End Property
 
+    Public Property PublicFlag As Boolean
+        Get
+            Return mbPublicFlag
+        End Get
+        Set(value As Boolean)
+            mbPublicFlag = value
+        End Set
+    End Property
     Public Property RestartServer As Boolean
         Get
             Return mbRestart
@@ -205,7 +214,7 @@ Public Class clsServer
 #End Region     '   PUBLIC PROPERTIES
 
     Public Sub New(ByVal sBackupPath As String, ByVal sBaseFolderPath As String, ByVal sServerName As String, ByVal iServPort As Integer, ByVal sWorldName As String, ByVal sPass As String _
-                            , ByVal sSaveDir As String, ByVal bUpdateOnRestart As Boolean, ByVal bRestart As Boolean, ByVal bBackup As Boolean _
+                            , ByVal sSaveDir As String, ByVal bUpdateOnRestart As Boolean, ByVal bPublic As Boolean, ByVal bRestart As Boolean, ByVal bBackup As Boolean _
                             , ByVal iRestartHour As Integer, ByVal iRestartMin As Integer)
         CreationGUID = Guid.NewGuid.ToString
 
@@ -219,6 +228,7 @@ Public Class clsServer
         msWorldName = sWorldName
         msPass = sPass
         msSaveDir = sSaveDir
+        mbPublicFlag = bPublic
         mbUpdate = bUpdateOnRestart
         mbRestart = bRestart
         mbBackup = bBackup
@@ -373,9 +383,10 @@ Public Class clsServer
 
                     'valheim_server -nographics -batchmode -name "CompanyOfWolves" -port 7810 -world "worldcow" -password "CompanyOfWolves!" -savedir "C:\Valheim Server\savedata"
                     psArgLine = "-nographics -batchmode -name " & Chr(34) & Me.ServerName & Chr(34)
-                    psArgLine = psArgLine & " -port " & Me.Port & " -world " & Chr(34) & Me.WorldName & Chr(34)
-                    psArgLine = psArgLine & " -password " & Chr(34) & Me.Password & Chr(34)
+                    psArgLine = psArgLine & " -port " & Me.Port
+                    psArgLine = psArgLine & " -world " & Chr(34) & Me.WorldName & Chr(34) & " -password " & Chr(34) & Me.Password & Chr(34)
                     psArgLine = psArgLine & " -savedir " & Chr(34) & Me.SaveDir & Chr(34)
+                    psArgLine = psArgLine & " -public " & IIf(Me.PublicFlag, "1", "0")
 
                     processStartInfo = New System.Diagnostics.ProcessStartInfo()
                     processStartInfo.FileName = Chr(34) & BuildProcessExeName() & Chr(34)

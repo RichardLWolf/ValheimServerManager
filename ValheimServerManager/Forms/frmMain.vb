@@ -34,7 +34,7 @@ Public Class frmMain
         End If
         psSaveDir = System.IO.Path.Combine(psFolder, "savedata")
 
-        Dim poNewServ As New clsServer(modMain.BackupFolderPath, psFolder, psServer, 2456, "My New World", modMain.RandomPassword(10), psSaveDir, False, True, True, 3, 0)
+        Dim poNewServ As New clsServer(modMain.BackupFolderPath, psFolder, psServer, 2456, "My New World", modMain.RandomPassword(10), psSaveDir, False, True, True, True, 3, 0)
         poNewServ.AutoStart = False
 
         poFrm.ReadyForm(poNewServ, False)
@@ -355,21 +355,31 @@ Public Class frmMain
             End If
             ' save server to config and listview
             If pbContinue Then
-                Dim poDR As DataRow = goConfig.ServerData.NewRow
-                poDR.Item("GUID") = oServer.CreationGUID
-                poDR.Item("ServerFolder") = oServer.FolderPath
-                poDR.Item("ServerName") = oServer.ServerName
-                poDR.Item("ServerPort") = oServer.Port
-                poDR.Item("ServerWorld") = oServer.WorldName
-                poDR.Item("ServerPassword") = oServer.Password
-                poDR.Item("ServerSaveDir") = oServer.SaveDir
-                poDR.Item("UpdateOnRestart") = oServer.UpdateServer
-                poDR.Item("Restart") = oServer.RestartServer
-                poDR.Item("RestartHour") = oServer.RestartHour
-                poDR.Item("RestartMin") = oServer.RestartMin
-                poDR.Item("Backup") = oServer.BackupServer
-                goConfig.ServerData.Rows.Add(poDR)
-                pbContinue = goConfig.SaveConfigFile()
+                Dim pbNewServer As Boolean = True
+                For Each poRow As DataRow In goConfig.ServerData.Rows
+                    Dim psCurr As String = poRow("ServerFolder")
+                    If String.Equals(psCurr, oServer.FolderPath, StringComparison.InvariantCultureIgnoreCase) Then
+                        pbNewServer = False
+                        Exit For
+                    End If
+                Next
+                If pbNewServer Then
+                    Dim poDR As DataRow = goConfig.ServerData.NewRow
+                    poDR.Item("GUID") = oServer.CreationGUID
+                    poDR.Item("ServerFolder") = oServer.FolderPath
+                    poDR.Item("ServerName") = oServer.ServerName
+                    poDR.Item("ServerPort") = oServer.Port
+                    poDR.Item("ServerWorld") = oServer.WorldName
+                    poDR.Item("ServerPassword") = oServer.Password
+                    poDR.Item("ServerSaveDir") = oServer.SaveDir
+                    poDR.Item("UpdateOnRestart") = oServer.UpdateServer
+                    poDR.Item("Restart") = oServer.RestartServer
+                    poDR.Item("RestartHour") = oServer.RestartHour
+                    poDR.Item("RestartMin") = oServer.RestartMin
+                    poDR.Item("Backup") = oServer.BackupServer
+                    goConfig.ServerData.Rows.Add(poDR)
+                    pbContinue = goConfig.SaveConfigFile()
+                End If
             End If
             ' check firewall 
             If pbContinue Then
@@ -536,10 +546,11 @@ Public Class frmMain
                 Dim psSaveDir As String = SafeStr(poDR.Item("ServerSaveDir"))
                 Dim pbUdpate As Boolean = SafeBool(poDR.Item("UpdateOnRestart"))
                 Dim pbRestart As Boolean = SafeBool(poDR.Item("Restart"))
+                Dim pbPublic As Boolean = SafeBool(poDR.Item("Public"))
                 Dim piHour As Integer = SafeInt(poDR.Item("RestartHour"))
                 Dim piMin As Integer = SafeInt(poDR.Item("RestartHour"))
                 Dim pbBackup As Boolean = poDR.Item("Backup")
-                Dim poServer As New clsServer(modMain.BackupFolderPath, psFolder, psName, piPort, psWorld, psPass, psSaveDir, pbUdpate, pbRestart, pbBackup, piHour, piMin)
+                Dim poServer As New clsServer(modMain.BackupFolderPath, psFolder, psName, piPort, psWorld, psPass, psSaveDir, pbUdpate, pbPublic, pbRestart, pbBackup, piHour, piMin)
                 poServer.CreationGUID = SafeStr(poDR.Item("GUID"))
                 poServer.AutoStart = True
                 AddToListView(poServer)
