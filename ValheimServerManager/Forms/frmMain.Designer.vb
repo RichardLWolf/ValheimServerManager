@@ -206,7 +206,6 @@ Partial Class frmMain
         '
         'lvwServers
         '
-        Me.lvwServers.ContextMenuStrip = Me.mnuPop
         Me.lvwServers.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvwServers.HideSelection = False
         Me.lvwServers.Location = New System.Drawing.Point(0, 39)

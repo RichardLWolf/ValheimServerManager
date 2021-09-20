@@ -396,44 +396,63 @@ Public Class clsServer
                     processStartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Me.FolderPath)
                     processStartInfo.EnvironmentVariables.Add("SteamAppId", "892970")
                     moServerProc = System.Diagnostics.Process.Start(processStartInfo)
+                    System.Threading.Thread.Sleep(3000)
+                    If CheckForProcess() = False Then
+                        goLogger.LogError("clsServer.MonitorServer", "Failed to load executable file: " & BuildProcessExeName())
+                        mbAbort = True
+                        mbRestart = False
+                    Else
+                        miCurrState = StateVals.Running
+                        mbAlive = True
+                        RaiseEvent ServerStatus(Me)
+                    End If
                 Else
                     goLogger.LogError("clsServer.MonitorServer", "Missing server executable file: " & BuildProcessExeName())
                     mbAbort = True
                     mbRestart = False
                 End If
             Else
-                miCurrState = StateVals.Starting
+                miCurrState = StateVals.Running
+                mbAlive = True
                 RaiseEvent ServerStatus(Me)
             End If
-            If moServerProc IsNot Nothing And Not mbAbort Then
-                ' see if we can query the server
-                mbAlive = False
-                ptStartTime = DateTime.Now
-                Do While Not mbAbort And Not mbAlive And DateTime.Now.Subtract(ptStartTime).TotalMinutes < 5 And moServerProc IsNot Nothing
-                    System.Threading.Thread.Sleep(250)
-                    Try
-                        Using poQuery As New SteamQueryNet.ServerQuery(String.Format("steam://connect/{0}:{1:#0}", "127.0.0.1", Me.Port + 1))
-                            Dim poServInfo As SteamQueryNet.Models.ServerInfo = poQuery.GetServerInfo
-                            If poServInfo IsNot Nothing Then
-                                Debug.Print("Product version is " & moServerProc.Modules(0).FileVersionInfo.ProductVersion)
-                                Debug.Print("File version is " & moServerProc.Modules(0).FileVersionInfo.FileVersion)
-                                Dim psVer As String = moServerProc.Modules(0).FileVersionInfo.ProductVersion
-                                miPID = moServerProc.Id
-                                msExeVer = psVer
-                                mbAlive = True
-                                miCurrState = StateVals.Running
-                                RaiseEvent ServerStatus(Me)
-                            End If
-                        End Using
+            If moServerProc IsNot Nothing And Not mbAbort And mbAlive Then
+                '' see if we can query the server
+                'mbAlive = False
+                'ptStartTime = DateTime.Now
+                'Do While Not mbAbort And Not mbAlive And DateTime.Now.Subtract(ptStartTime).TotalMinutes < 2 And moServerProc IsNot Nothing
+                '    System.Threading.Thread.Sleep(250)
+                '    Try
+                '        Using poQuery As New SteamQueryNet.ServerQuery(String.Format("steam://connect/{0}:{1:#0}", "127.0.0.1", Me.Port + 1))
+                '            poQuery.ReceiveTimeout = 100
+                '            poQuery.SendTimeout = 100
+                '            Dim poServInfo As SteamQueryNet.Models.ServerInfo = poQuery.GetServerInfo
+                '            If poServInfo IsNot Nothing Then
+                '                Debug.Print("Product version is " & moServerProc.Modules(0).FileVersionInfo.ProductVersion)
+                '                Debug.Print("File version is " & moServerProc.Modules(0).FileVersionInfo.FileVersion)
+                '                Dim psVer As String = moServerProc.Modules(0).FileVersionInfo.ProductVersion
+                '                miPID = moServerProc.Id
+                '                msExeVer = psVer
+                '                mbAlive = True
+                '                miCurrState = StateVals.Running
+                '                RaiseEvent ServerStatus(Me)
+                '            Else
+                '                goLogger.LogEntry("Start thread " & Me.ServerName & " no response from steam connect port " & Me.Port + 1 & ": Abort(" & mbAbort & ") Alive(" & mbAlive & ") Restart(" & pbRestartTime & ")", EventLogEntryType.Warning)
+                '            End If
+                '        End Using
 
-                    Catch ThreadEx As System.Threading.ThreadAbortException
-                        mbAbort = True
-                        Exit Do
+                '    Catch ThreadEx As System.Threading.ThreadAbortException
+                '        mbAbort = True
+                '        Exit Do
 
-                    Catch QueryEx As Exception
-                        ' skip it and try again
-                    End Try
-                Loop
+                '    Catch QueryEx As Exception
+                '        ' skip it and try again
+                '    End Try
+                'Loop
+                'If mbAbort Then
+                '    miCurrState = StateVals.Stopped
+                '    RaiseEvent ServerStatus(Me)
+                'End If
                 ' idle here until server goes away or time for backup, etc.
                 mtNextRestart = NextRestartTime()
                 pbRestartTime = False
@@ -531,11 +550,16 @@ Public Class clsServer
             RaiseEvent ServerStatus(Me)
             LastBackupResult = True
 
+            ' pause a tick for windows to finish up game files if necessary
+            System.Threading.Thread.Sleep(500)
+
             Dim psSourceFolder As String = Me.WorldDataFolder
             Dim psDestFile As String = System.IO.Path.Combine(msBackupPath, String.Format("{0}-{1:yyyyddMM-HHmmss}.zip", Me.CreationGUID, DateTime.Now))
+
+            goLogger.LogEntry("Beginning backup of [" & psSourceFolder & "] to archive [" & psDestFile & "].", EventLogEntryType.Information)
             System.IO.Compression.ZipFile.CreateFromDirectory(psSourceFolder, psDestFile)
             ' pause a tick for windows to release handles
-            System.Threading.Thread.Sleep(250)
+            System.Threading.Thread.Sleep(500)
             goLogger.LogEntry("Backup of " & Me.WorldDataFolder & " to archive " & psDestFile & " complete.", EventLogEntryType.Information)
             ' get list of files
             Dim psList As New List(Of String)
