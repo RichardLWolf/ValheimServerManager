@@ -282,6 +282,7 @@ Public Class frmMain
                     poRow.Item("ServerWorld") = oServ.WorldName
                     poRow.Item("ServerPassword") = oServ.Password
                     poRow.Item("UpdateOnRestart") = oServ.UpdateServer
+                    poRow.Item("Public") = oServ.PublicFlag
                     poRow.Item("Restart") = oServ.RestartServer
                     poRow.Item("RestartHour") = oServ.RestartHour
                     poRow.Item("RestartMin") = oServ.RestartMin
@@ -377,6 +378,7 @@ Public Class frmMain
                     poDR.Item("RestartHour") = oServer.RestartHour
                     poDR.Item("RestartMin") = oServer.RestartMin
                     poDR.Item("Backup") = oServer.BackupServer
+                    poDR.Item("Public") = oServer.PublicFlag
                     goConfig.ServerData.Rows.Add(poDR)
                     pbContinue = goConfig.SaveConfigFile()
                 End If

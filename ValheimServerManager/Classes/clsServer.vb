@@ -501,7 +501,7 @@ Public Class clsServer
                         moWorkThread.IsBackground = True
                         moWorkThread.Start()
                         ptStartTime = DateTime.Now
-                        Do While DateTime.Now.Subtract(ptStartTime).TotalSeconds < 30 AndAlso moWorkThread IsNot Nothing AndAlso moWorkThread.IsAlive
+                        Do While DateTime.Now.Subtract(ptStartTime).TotalSeconds < 120 AndAlso moWorkThread IsNot Nothing AndAlso moWorkThread.IsAlive
                             System.Threading.Thread.Sleep(1000)
                         Loop
                     End If
@@ -511,7 +511,7 @@ Public Class clsServer
                         moWorkThread.IsBackground = True
                         moWorkThread.Start()
                         ptStartTime = DateTime.Now
-                        Do While DateTime.Now.Subtract(ptStartTime).TotalMinutes < 10 AndAlso moWorkThread IsNot Nothing AndAlso moWorkThread.IsAlive
+                        Do While DateTime.Now.Subtract(ptStartTime).TotalMinutes < 120 AndAlso moWorkThread IsNot Nothing AndAlso moWorkThread.IsAlive
                             System.Threading.Thread.Sleep(1000)
                         Loop
                     End If
@@ -551,15 +551,16 @@ Public Class clsServer
             LastBackupResult = True
 
             ' pause a tick for windows to finish up game files if necessary
-            System.Threading.Thread.Sleep(500)
+            System.Threading.Thread.Sleep(1500)
+
 
             Dim psSourceFolder As String = Me.WorldDataFolder
-            Dim psDestFile As String = System.IO.Path.Combine(msBackupPath, String.Format("{0}-{1:yyyyddMM-HHmmss}.zip", Me.CreationGUID, DateTime.Now))
+            Dim psDestFile As String = System.IO.Path.Combine(msBackupPath, String.Format("{0}-{1:yyyyMMdd-HHmmss}.zip", Me.CreationGUID, DateTime.Now))
 
             goLogger.LogEntry("Beginning backup of [" & psSourceFolder & "] to archive [" & psDestFile & "].", EventLogEntryType.Information)
             System.IO.Compression.ZipFile.CreateFromDirectory(psSourceFolder, psDestFile)
             ' pause a tick for windows to release handles
-            System.Threading.Thread.Sleep(500)
+            System.Threading.Thread.Sleep(1500)
             goLogger.LogEntry("Backup of " & Me.WorldDataFolder & " to archive " & psDestFile & " complete.", EventLogEntryType.Information)
             ' get list of files
             Dim psList As New List(Of String)

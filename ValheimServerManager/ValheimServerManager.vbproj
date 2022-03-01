@@ -67,10 +67,11 @@
     <ApplicationIcon>Resources\vsm.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CFBAC1A0D6891643FAE9DC78B6A992C4AC2ED232</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>3BAFD79BC1F659EDB8DFCA57F0EE84A5E252084B</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ValheimServerManager_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
