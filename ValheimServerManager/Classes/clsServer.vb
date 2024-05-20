@@ -469,19 +469,19 @@ Public Class clsServer
                         psArgLine = psArgLine & "-preset " & msPresetValue
                     End If
                     If msModCombatValue <> "" Then
-                        psArgLine = psArgLine & "-modifier Combat " & msModCombatValue
+                        psArgLine = psArgLine & "-modifier combat " & msModCombatValue
                     End If
                     If msModDeathValue <> "" Then
-                        psArgLine = psArgLine & "-modifier DeathPenalty " & msModDeathValue
+                        psArgLine = psArgLine & "-modifier deathpenalty " & msModDeathValue
                     End If
                     If msModResources <> "" Then
-                        psArgLine = psArgLine & "-modifier Resources " & msModResources
+                        psArgLine = psArgLine & "-modifier resources " & msModResources
                     End If
                     If msModRaids <> "" Then
-                        psArgLine = psArgLine & "-modifier Raids " & msModRaids
+                        psArgLine = psArgLine & "-modifier raids " & msModRaids
                     End If
                     If msModPortals <> "" Then
-                        psArgLine = psArgLine & "-modifier Portals " & msModPortals
+                        psArgLine = psArgLine & "-modifier portals " & msModPortals
                     End If
                     ' Start the process itself
                     processStartInfo = New System.Diagnostics.ProcessStartInfo()

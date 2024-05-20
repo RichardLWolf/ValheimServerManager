@@ -27,13 +27,13 @@
 
         cboPreset.Items.Clear()
         cboPreset.Items.Add("<None>")
-        cboPreset.Items.Add("Normal")
-        cboPreset.Items.Add("Casual")
-        cboPreset.Items.Add("Easy")
-        cboPreset.Items.Add("Hard")
-        cboPreset.Items.Add("Hardcore")
-        cboPreset.Items.Add("Immersive")
-        cboPreset.Items.Add("Hammer")
+        cboPreset.Items.Add("normal")
+        cboPreset.Items.Add("casual")
+        cboPreset.Items.Add("easy")
+        cboPreset.Items.Add("hard")
+        cboPreset.Items.Add("hardcore")
+        cboPreset.Items.Add("immersive")
+        cboPreset.Items.Add("hammer")
 
         cboModCombat.Items.Clear()
         cboModCombat.Items.Add("<Default>")
@@ -79,38 +79,28 @@
         End If
 
         cboModCombat.SelectedIndex = 0
-        chkModCombat.Checked = False
         If foServ.ModCombatValue <> "" Then
             cboModCombat.SelectedIndex = FindObjectIndex(cboModCombat, foServ.ModCombatValue)
-            chkModCombat.Checked = True
         End If
 
         cboModDeath.SelectedIndex = 0
-        chkModDeath.Checked = False
         If foServ.ModDeathValue <> "" Then
             cboModDeath.SelectedIndex = FindObjectIndex(cboModDeath, foServ.ModDeathValue)
-            chkModDeath.Checked = True
         End If
 
         cboModResources.SelectedIndex = 0
-        chkModResources.Checked = False
         If foServ.ModResources <> "" Then
             cboModResources.SelectedIndex = FindObjectIndex(cboModResources, foServ.ModResources)
-            chkModResources.Checked = True
         End If
 
         cboModRaids.SelectedIndex = 0
-        chkModRaids.Checked = False
         If foServ.ModRaids <> "" Then
             cboModRaids.SelectedIndex = FindObjectIndex(cboModRaids, foServ.ModRaids)
-            chkModRaids.Checked = True
         End If
 
         cboModPortals.SelectedIndex = 0
-        chkModPortals.Checked = False
         If foServ.ModPortals <> "" Then
             cboModPortals.SelectedIndex = FindObjectIndex(cboModPortals, foServ.ModPortals)
-            chkModPortals.Checked = True
         End If
 
         dteRestartTime.Value = New Date(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, foServ.RestartHour, foServ.RestartMin, 0, 0)
@@ -176,37 +166,37 @@
         If cboPreset.SelectedIndex < 1 Then
             foServ.PresetValue = ""
         Else
-            foServ.PresetValue = cboPreset.SelectedValue.ToString
+            foServ.PresetValue = cboPreset.Items(cboPreset.SelectedIndex).ToString
         End If
 
-        If chkModCombat.Checked = False OrElse cboModCombat.SelectedIndex < 1 Then
+        If cboModCombat.SelectedIndex < 1 Then
             foServ.ModCombatValue = ""
         Else
-            foServ.ModCombatValue = cboModCombat.SelectedValue.ToString
+            foServ.ModCombatValue = cboModCombat.Items(cboModCombat.SelectedIndex).ToString
         End If
 
-        If chkModDeath.Checked = False OrElse cboModDeath.SelectedIndex < 1 Then
+        If cboModDeath.SelectedIndex < 1 Then
             foServ.ModDeathValue = ""
         Else
-            foServ.ModDeathValue = cboModDeath.SelectedValue.ToString
+            foServ.ModDeathValue = cboModDeath.Items(cboModDeath.SelectedIndex).ToString
         End If
 
-        If chkModResources.Checked = False OrElse cboModResources.SelectedIndex < 1 Then
+        If cboModResources.SelectedIndex < 1 Then
             foServ.ModResources = ""
         Else
-            foServ.ModResources = cboModResources.SelectedValue.ToString
+            foServ.ModResources = cboModResources.Items(cboModResources.SelectedIndex).ToString
         End If
 
-        If chkModRaids.Checked = False OrElse cboModRaids.SelectedIndex < 1 Then
+        If cboModRaids.SelectedIndex < 1 Then
             foServ.ModRaids = ""
         Else
-            foServ.ModRaids = cboModRaids.SelectedValue.ToString
+            foServ.ModRaids = cboModRaids.Items(cboModRaids.SelectedIndex).ToString
         End If
 
-        If chkModPortals.Checked = False OrElse cboModPortals.SelectedIndex < 1 Then
+        If cboModPortals.SelectedIndex < 1 Then
             foServ.ModPortals = ""
         Else
-            foServ.ModPortals = cboModPortals.SelectedValue.ToString
+            foServ.ModPortals = cboModPortals.Items(cboModPortals.SelectedIndex).ToString
         End If
 
 
@@ -284,4 +274,5 @@
         Next
 
     End Function
+
 End Class
