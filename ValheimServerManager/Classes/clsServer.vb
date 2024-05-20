@@ -466,22 +466,22 @@ Public Class clsServer
                     psArgLine = psArgLine & " -public " & IIf(Me.PublicFlag, "1", "0")
                     ' mods
                     If msPresetValue <> "" Then
-                        psArgLine = psArgLine & "-preset " & msPresetValue
+                        psArgLine = psArgLine & " -preset " & msPresetValue
                     End If
                     If msModCombatValue <> "" Then
-                        psArgLine = psArgLine & "-modifier combat " & msModCombatValue
+                        psArgLine = psArgLine & " -modifier combat " & msModCombatValue
                     End If
                     If msModDeathValue <> "" Then
-                        psArgLine = psArgLine & "-modifier deathpenalty " & msModDeathValue
+                        psArgLine = psArgLine & " -modifier deathpenalty " & msModDeathValue
                     End If
                     If msModResources <> "" Then
-                        psArgLine = psArgLine & "-modifier resources " & msModResources
+                        psArgLine = psArgLine & " -modifier resources " & msModResources
                     End If
                     If msModRaids <> "" Then
-                        psArgLine = psArgLine & "-modifier raids " & msModRaids
+                        psArgLine = psArgLine & " -modifier raids " & msModRaids
                     End If
                     If msModPortals <> "" Then
-                        psArgLine = psArgLine & "-modifier portals " & msModPortals
+                        psArgLine = psArgLine & " -modifier portals " & msModPortals
                     End If
                     ' Start the process itself
                     processStartInfo = New System.Diagnostics.ProcessStartInfo()
