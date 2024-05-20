@@ -46,7 +46,13 @@
         moServerData.Columns.Add("RestartMin", GetType(Integer))
         moServerData.Columns.Add("Backup", GetType(Boolean))
         moServerData.Columns.Add("Public", GetType(Boolean))
-
+        ' Version 1.2 new columns (modifier settings)
+        moServerData.Columns.Add("Preset", GetType(String))
+        moServerData.Columns.Add("ModCombat", GetType(String))
+        moServerData.Columns.Add("ModDeathPenalty", GetType(String))
+        moServerData.Columns.Add("ModResources", GetType(String))
+        moServerData.Columns.Add("ModRaids", GetType(String))
+        moServerData.Columns.Add("ModPortals", GetType(String))
         Me.Clear()
     End Sub
 

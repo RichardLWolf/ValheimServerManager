@@ -34,7 +34,7 @@ Public Class frmMain
         End If
         psSaveDir = System.IO.Path.Combine(psFolder, "savedata")
 
-        Dim poNewServ As New clsServer(modMain.BackupFolderPath, psFolder, psServer, 2456, "My New World", modMain.RandomPassword(10), psSaveDir, False, True, True, True, 3, 0)
+        Dim poNewServ As New clsServer(modMain.BackupFolderPath, psFolder, psServer, 2456, "My New World", modMain.RandomPassword(10), "", "", "", "", "", "", psSaveDir, False, True, True, True, 3, 0)
         poNewServ.AutoStart = False
 
         poFrm.ReadyForm(poNewServ, False)
@@ -287,6 +287,12 @@ Public Class frmMain
                     poRow.Item("RestartHour") = oServ.RestartHour
                     poRow.Item("RestartMin") = oServ.RestartMin
                     poRow.Item("Backup") = oServ.BackupServer
+                    poRow.Item("Preset") = oServ.PresetValue
+                    poRow.Item("ModCombat") = oServ.ModCombatValue
+                    poRow.Item("ModDeathPenalty") = oServ.ModDeathValue
+                    poRow.Item("ModResources") = oServ.ModResources
+                    poRow.Item("ModRaids") = oServ.ModRaids
+                    poRow.Item("ModPortals") = oServ.ModPortals
                     goConfig.SaveConfigFile()
                     UpdateListView(oServ)
                 End If
@@ -379,6 +385,14 @@ Public Class frmMain
                     poDR.Item("RestartMin") = oServer.RestartMin
                     poDR.Item("Backup") = oServer.BackupServer
                     poDR.Item("Public") = oServer.PublicFlag
+                    ' ver 1.2 modifiers
+                    poDR.Item("Preset") = oServer.PresetValue
+                    poDR.Item("ModCombat") = oServer.ModCombatValue
+                    poDR.Item("ModDeathPenalty") = oServer.ModDeathValue
+                    poDR.Item("ModResources") = oServer.ModResources
+                    poDR.Item("ModRaids") = oServer.ModRaids
+                    poDR.Item("ModPortals") = oServer.ModPortals
+
                     goConfig.ServerData.Rows.Add(poDR)
                     pbContinue = goConfig.SaveConfigFile()
                 End If
@@ -552,7 +566,17 @@ Public Class frmMain
                 Dim piHour As Integer = SafeInt(poDR.Item("RestartHour"))
                 Dim piMin As Integer = SafeInt(poDR.Item("RestartHour"))
                 Dim pbBackup As Boolean = poDR.Item("Backup")
-                Dim poServer As New clsServer(modMain.BackupFolderPath, psFolder, psName, piPort, psWorld, psPass, psSaveDir, pbUdpate, pbPublic, pbRestart, pbBackup, piHour, piMin)
+                ' version 1.2 new columns (modifier settings)
+                Dim psPreset As String = SafeStr(poDR.Item("Preset"))
+                Dim psCombat As String = SafeStr(poDR.Item("ModCombat"))
+                Dim psDeath As String = SafeStr(poDR.Item("ModDeathPenalty"))
+                Dim psRes As String = SafeStr(poDR.Item("ModResources"))
+                Dim psRaids As String = SafeStr(poDR.Item("ModRaids"))
+                Dim psPortals As String = SafeStr(poDR.Item("ModPortals"))
+
+                Dim poServer As New clsServer(modMain.BackupFolderPath, psFolder, psName, piPort, psWorld, psPass _
+                                                    , psPreset, psCombat, psDeath, psRes, psRaids, psPortals _
+                                                    , psSaveDir, pbUdpate, pbPublic, pbRestart, pbBackup, piHour, piMin)
                 poServer.CreationGUID = SafeStr(poDR.Item("GUID"))
                 poServer.AutoStart = True
                 AddToListView(poServer)

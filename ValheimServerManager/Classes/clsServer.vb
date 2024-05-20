@@ -32,6 +32,14 @@ Public Class clsServer
     Private miRestartMin As Integer
     Private msBackupPath As String
     Private msWorldFolder As String
+    ' Configuration settings
+    Private msPresetValue As String
+    Private msModCombatValue As String
+    Private msModDeathValue As String
+    Private msModResources As String
+    Private msModRaids As String
+    Private msModPortals As String
+
 
     Private mbAutoStart As Boolean = False
     Private mbAbort As Boolean = False
@@ -211,9 +219,70 @@ Public Class clsServer
         End Get
     End Property
 
+
+
+    Public Property PresetValue As String
+        Get
+            Return msPresetValue
+        End Get
+        Set(ByVal value As String)
+            msPresetValue = value.Trim
+        End Set
+    End Property
+
+    Public Property ModCombatValue As String
+        Get
+            Return msModCombatValue
+        End Get
+        Set(ByVal value As String)
+            msModCombatValue = value.Trim
+        End Set
+    End Property
+
+    Public Property ModDeathValue As String
+        Get
+            Return msModDeathValue
+        End Get
+        Set(ByVal value As String)
+            msModDeathValue = value.Trim
+        End Set
+    End Property
+
+    Public Property ModResources As String
+        Get
+            Return msModResources
+        End Get
+        Set(ByVal value As String)
+            msModResources = value.Trim
+        End Set
+    End Property
+
+    Public Property ModRaids As String
+        Get
+            Return msModRaids
+        End Get
+        Set(ByVal value As String)
+            msModRaids = value.Trim
+        End Set
+    End Property
+
+    Public Property ModPortals As String
+        Get
+            Return msModPortals
+        End Get
+        Set(ByVal value As String)
+            msModPortals = value.Trim
+        End Set
+    End Property
+
+
+
+
 #End Region     '   PUBLIC PROPERTIES
 
     Public Sub New(ByVal sBackupPath As String, ByVal sBaseFolderPath As String, ByVal sServerName As String, ByVal iServPort As Integer, ByVal sWorldName As String, ByVal sPass As String _
+                            , ByVal sPresetValue As String, ByVal sModCombatValue As String, ByVal sModDeathValue As String, ByVal sModResources As String _
+                            , ByVal smodRaids As String, ByVal sModPortals As String _
                             , ByVal sSaveDir As String, ByVal bUpdateOnRestart As Boolean, ByVal bPublic As Boolean, ByVal bRestart As Boolean, ByVal bBackup As Boolean _
                             , ByVal iRestartHour As Integer, ByVal iRestartMin As Integer)
         CreationGUID = Guid.NewGuid.ToString
@@ -227,6 +296,14 @@ Public Class clsServer
         miPort = iServPort
         msWorldName = sWorldName
         msPass = sPass
+
+        msPresetValue = sPresetValue
+        msModCombatValue = sModCombatValue
+        msModDeathValue = sModDeathValue
+        msModResources = sModResources
+        msModRaids = smodRaids
+        msModPortals = sModPortals
+
         msSaveDir = sSaveDir
         mbPublicFlag = bPublic
         mbUpdate = bUpdateOnRestart
@@ -387,7 +464,26 @@ Public Class clsServer
                     psArgLine = psArgLine & " -world " & Chr(34) & Me.WorldName & Chr(34) & " -password " & Chr(34) & Me.Password & Chr(34)
                     psArgLine = psArgLine & " -savedir " & Chr(34) & Me.SaveDir & Chr(34)
                     psArgLine = psArgLine & " -public " & IIf(Me.PublicFlag, "1", "0")
-
+                    ' mods
+                    If msPresetValue <> "" Then
+                        psArgLine = psArgLine & "-preset " & msPresetValue
+                    End If
+                    If msModCombatValue <> "" Then
+                        psArgLine = psArgLine & "-modifier Combat " & msModCombatValue
+                    End If
+                    If msModDeathValue <> "" Then
+                        psArgLine = psArgLine & "-modifier DeathPenalty " & msModDeathValue
+                    End If
+                    If msModResources <> "" Then
+                        psArgLine = psArgLine & "-modifier Resources " & msModResources
+                    End If
+                    If msModRaids <> "" Then
+                        psArgLine = psArgLine & "-modifier Raids " & msModRaids
+                    End If
+                    If msModPortals <> "" Then
+                        psArgLine = psArgLine & "-modifier Portals " & msModPortals
+                    End If
+                    ' Start the process itself
                     processStartInfo = New System.Diagnostics.ProcessStartInfo()
                     processStartInfo.FileName = Chr(34) & BuildProcessExeName() & Chr(34)
                     processStartInfo.Arguments = psArgLine

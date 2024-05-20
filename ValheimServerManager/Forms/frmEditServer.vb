@@ -9,8 +9,9 @@
         foServ = oServ
 
         foOrigServ = New clsServer(oServ.BackupPath, oServ.FolderPath, oServ.ServerName, oServ.Port, oServ.WorldName _
-                                   , oServ.Password, oServ.SaveDir, oServ.UpdateServer, oServ.RestartServer, oServ.PublicFlag _
-                                   , oServ.BackupServer, oServ.RestartHour, oServ.RestartMin)
+                                   , oServ.Password, oServ.PresetValue, oServ.ModCombatValue, oServ.ModDeathValue _
+                                   , oServ.ModResources, oServ.ModRaids, oServ.ModPortals, oServ.SaveDir, oServ.UpdateServer _
+                                   , oServ.RestartServer, oServ.PublicFlag, oServ.BackupServer, oServ.RestartHour, oServ.RestartMin)
         foOrigServ.CreationGUID = oServ.CreationGUID
 
         txtServerName.Text = foServ.ServerName
@@ -23,6 +24,95 @@
         chkRestart.Checked = foServ.RestartServer
         chkUpdate.Checked = foServ.UpdateServer
         chkBackup.Checked = foServ.BackupServer
+
+        cboPreset.Items.Clear()
+        cboPreset.Items.Add("<None>")
+        cboPreset.Items.Add("Normal")
+        cboPreset.Items.Add("Casual")
+        cboPreset.Items.Add("Easy")
+        cboPreset.Items.Add("Hard")
+        cboPreset.Items.Add("Hardcore")
+        cboPreset.Items.Add("Immersive")
+        cboPreset.Items.Add("Hammer")
+
+        cboModCombat.Items.Clear()
+        cboModCombat.Items.Add("<Default>")
+        cboModCombat.Items.Add("veryeasy")
+        cboModCombat.Items.Add("easy")
+        cboModCombat.Items.Add("hard")
+        cboModCombat.Items.Add("veryhard")
+
+        cboModDeath.Items.Clear()
+        cboModDeath.Items.Add("<Default>")
+        cboModDeath.Items.Add("casual")
+        cboModDeath.Items.Add("veryeasy")
+        cboModDeath.Items.Add("easy")
+        cboModDeath.Items.Add("hard")
+        cboModDeath.Items.Add("hardcore")
+
+        cboModResources.Items.Clear()
+        cboModResources.Items.Add("<Default>")
+        cboModResources.Items.Add("muchless")
+        cboModResources.Items.Add("less")
+        cboModResources.Items.Add("more")
+        cboModResources.Items.Add("muchmore")
+        cboModResources.Items.Add("most")
+
+        cboModRaids.Items.Clear()
+        cboModRaids.Items.Add("<Default>")
+        cboModRaids.Items.Add("none")
+        cboModRaids.Items.Add("muchless")
+        cboModRaids.Items.Add("less")
+        cboModRaids.Items.Add("more")
+        cboModRaids.Items.Add("muchmore")
+        cboModRaids.Items.Add("most")
+
+        cboModPortals.Items.Clear()
+        cboModPortals.Items.Add("<Default>")
+        cboModPortals.Items.Add("casual")
+        cboModPortals.Items.Add("hard")
+        cboModPortals.Items.Add("veryhard")
+
+        cboPreset.SelectedIndex = 0
+        If foServ.PresetValue <> "" Then
+            cboPreset.SelectedIndex = FindObjectIndex(cboPreset, foServ.PresetValue)
+        End If
+
+        cboModCombat.SelectedIndex = 0
+        chkModCombat.Checked = False
+        If foServ.ModCombatValue <> "" Then
+            cboModCombat.SelectedIndex = FindObjectIndex(cboModCombat, foServ.ModCombatValue)
+            chkModCombat.Checked = True
+        End If
+
+        cboModDeath.SelectedIndex = 0
+        chkModDeath.Checked = False
+        If foServ.ModDeathValue <> "" Then
+            cboModDeath.SelectedIndex = FindObjectIndex(cboModDeath, foServ.ModDeathValue)
+            chkModDeath.Checked = True
+        End If
+
+        cboModResources.SelectedIndex = 0
+        chkModResources.Checked = False
+        If foServ.ModResources <> "" Then
+            cboModResources.SelectedIndex = FindObjectIndex(cboModResources, foServ.ModResources)
+            chkModResources.Checked = True
+        End If
+
+        cboModRaids.SelectedIndex = 0
+        chkModRaids.Checked = False
+        If foServ.ModRaids <> "" Then
+            cboModRaids.SelectedIndex = FindObjectIndex(cboModRaids, foServ.ModRaids)
+            chkModRaids.Checked = True
+        End If
+
+        cboModPortals.SelectedIndex = 0
+        chkModPortals.Checked = False
+        If foServ.ModPortals <> "" Then
+            cboModPortals.SelectedIndex = FindObjectIndex(cboModPortals, foServ.ModPortals)
+            chkModPortals.Checked = True
+        End If
+
         dteRestartTime.Value = New Date(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, foServ.RestartHour, foServ.RestartMin, 0, 0)
         Call chkRestart_CheckedChanged(Nothing, Nothing)
         Call txtPort_TextChanged(Nothing, Nothing)
@@ -82,6 +172,44 @@
         foServ.UpdateServer = chkUpdate.Checked
         foServ.RestartHour = dteRestartTime.Value.Hour
         foServ.RestartMin = dteRestartTime.Value.Minute
+        ' Modifier settings
+        If cboPreset.SelectedIndex < 1 Then
+            foServ.PresetValue = ""
+        Else
+            foServ.PresetValue = cboPreset.SelectedValue.ToString
+        End If
+
+        If chkModCombat.Checked = False OrElse cboModCombat.SelectedIndex < 1 Then
+            foServ.ModCombatValue = ""
+        Else
+            foServ.ModCombatValue = cboModCombat.SelectedValue.ToString
+        End If
+
+        If chkModDeath.Checked = False OrElse cboModDeath.SelectedIndex < 1 Then
+            foServ.ModDeathValue = ""
+        Else
+            foServ.ModDeathValue = cboModDeath.SelectedValue.ToString
+        End If
+
+        If chkModResources.Checked = False OrElse cboModResources.SelectedIndex < 1 Then
+            foServ.ModResources = ""
+        Else
+            foServ.ModResources = cboModResources.SelectedValue.ToString
+        End If
+
+        If chkModRaids.Checked = False OrElse cboModRaids.SelectedIndex < 1 Then
+            foServ.ModRaids = ""
+        Else
+            foServ.ModRaids = cboModRaids.SelectedValue.ToString
+        End If
+
+        If chkModPortals.Checked = False OrElse cboModPortals.SelectedIndex < 1 Then
+            foServ.ModPortals = ""
+        Else
+            foServ.ModPortals = cboModPortals.SelectedValue.ToString
+        End If
+
+
         RaiseEvent EditComplete(True, foServ)
         Me.Close()
     End Sub
@@ -139,5 +267,21 @@
     End Sub
 
 
+    Public Function FindObjectIndex(ByVal oCombo As ComboBox, ByVal oValue As Object) As Integer
+        Dim piIndex As Integer
 
+        FindObjectIndex = -1 'default not found 
+
+        For piIndex = 0 To oCombo.Items.Count - 1
+            Try
+                If oCombo.Items(piIndex).Equals(oValue) Then
+                    FindObjectIndex = piIndex
+                    Exit For
+                End If
+            Catch
+                Exit For
+            End Try
+        Next
+
+    End Function
 End Class

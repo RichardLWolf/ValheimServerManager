@@ -47,6 +47,20 @@ Partial Class frmEditServer
         Me.btnShowHide = New System.Windows.Forms.Button()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.chkPublic = New System.Windows.Forms.CheckBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.cboPreset = New System.Windows.Forms.ComboBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.chkModCombat = New System.Windows.Forms.CheckBox()
+        Me.cboModCombat = New System.Windows.Forms.ComboBox()
+        Me.cboModDeath = New System.Windows.Forms.ComboBox()
+        Me.chkModDeath = New System.Windows.Forms.CheckBox()
+        Me.cboModResources = New System.Windows.Forms.ComboBox()
+        Me.chkModResources = New System.Windows.Forms.CheckBox()
+        Me.cboModRaids = New System.Windows.Forms.ComboBox()
+        Me.chkModRaids = New System.Windows.Forms.CheckBox()
+        Me.cboModPortals = New System.Windows.Forms.ComboBox()
+        Me.chkModPortals = New System.Windows.Forms.CheckBox()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtServerName
@@ -187,10 +201,10 @@ Partial Class frmEditServer
         'btnSave
         '
         Me.btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnSave.Location = New System.Drawing.Point(208, 337)
+        Me.btnSave.Location = New System.Drawing.Point(567, 309)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 32)
-        Me.btnSave.TabIndex = 21
+        Me.btnSave.TabIndex = 24
         Me.btnSave.Text = "INS&TALL"
         Me.ToolTip1.SetToolTip(Me.btnSave, "Save settings and install server")
         Me.btnSave.UseVisualStyleBackColor = True
@@ -198,10 +212,10 @@ Partial Class frmEditServer
         'btnCancel
         '
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnCancel.Location = New System.Drawing.Point(312, 337)
+        Me.btnCancel.Location = New System.Drawing.Point(671, 309)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 32)
-        Me.btnCancel.TabIndex = 22
+        Me.btnCancel.TabIndex = 25
         Me.btnCancel.Text = "&CANCEL"
         Me.btnCancel.UseVisualStyleBackColor = True
         '
@@ -228,7 +242,7 @@ Partial Class frmEditServer
         'chkUpdate
         '
         Me.chkUpdate.AutoSize = True
-        Me.chkUpdate.Location = New System.Drawing.Point(250, 263)
+        Me.chkUpdate.Location = New System.Drawing.Point(15, 290)
         Me.chkUpdate.Name = "chkUpdate"
         Me.chkUpdate.Size = New System.Drawing.Size(134, 21)
         Me.chkUpdate.TabIndex = 19
@@ -239,7 +253,7 @@ Partial Class frmEditServer
         'chkBackup
         '
         Me.chkBackup.AutoSize = True
-        Me.chkBackup.Location = New System.Drawing.Point(250, 290)
+        Me.chkBackup.Location = New System.Drawing.Point(12, 317)
         Me.chkBackup.Name = "chkBackup"
         Me.chkBackup.Size = New System.Drawing.Size(137, 21)
         Me.chkBackup.TabIndex = 20
@@ -267,11 +281,146 @@ Partial Class frmEditServer
         Me.chkPublic.Text = "&Pu&blic Server"
         Me.chkPublic.UseVisualStyleBackColor = True
         '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(445, 9)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(44, 17)
+        Me.Label7.TabIndex = 21
+        Me.Label7.Text = "Pr&eset"
+        '
+        'cboPreset
+        '
+        Me.cboPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboPreset.FormattingEnabled = True
+        Me.cboPreset.Location = New System.Drawing.Point(448, 29)
+        Me.cboPreset.Name = "cboPreset"
+        Me.cboPreset.Size = New System.Drawing.Size(323, 25)
+        Me.cboPreset.TabIndex = 22
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.cboModPortals)
+        Me.GroupBox1.Controls.Add(Me.chkModPortals)
+        Me.GroupBox1.Controls.Add(Me.cboModRaids)
+        Me.GroupBox1.Controls.Add(Me.chkModRaids)
+        Me.GroupBox1.Controls.Add(Me.cboModResources)
+        Me.GroupBox1.Controls.Add(Me.chkModResources)
+        Me.GroupBox1.Controls.Add(Me.cboModDeath)
+        Me.GroupBox1.Controls.Add(Me.chkModDeath)
+        Me.GroupBox1.Controls.Add(Me.cboModCombat)
+        Me.GroupBox1.Controls.Add(Me.chkModCombat)
+        Me.GroupBox1.Location = New System.Drawing.Point(448, 70)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(323, 181)
+        Me.GroupBox1.TabIndex = 23
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "&Modifiers"
+        '
+        'chkModCombat
+        '
+        Me.chkModCombat.AutoSize = True
+        Me.chkModCombat.Location = New System.Drawing.Point(22, 24)
+        Me.chkModCombat.Name = "chkModCombat"
+        Me.chkModCombat.Size = New System.Drawing.Size(73, 21)
+        Me.chkModCombat.TabIndex = 0
+        Me.chkModCombat.Text = "Combat"
+        Me.chkModCombat.UseVisualStyleBackColor = True
+        '
+        'cboModCombat
+        '
+        Me.cboModCombat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboModCombat.FormattingEnabled = True
+        Me.cboModCombat.Location = New System.Drawing.Point(143, 22)
+        Me.cboModCombat.Name = "cboModCombat"
+        Me.cboModCombat.Size = New System.Drawing.Size(174, 25)
+        Me.cboModCombat.TabIndex = 1
+        '
+        'cboModDeath
+        '
+        Me.cboModDeath.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboModDeath.FormattingEnabled = True
+        Me.cboModDeath.Location = New System.Drawing.Point(143, 53)
+        Me.cboModDeath.Name = "cboModDeath"
+        Me.cboModDeath.Size = New System.Drawing.Size(174, 25)
+        Me.cboModDeath.TabIndex = 3
+        '
+        'chkModDeath
+        '
+        Me.chkModDeath.AutoSize = True
+        Me.chkModDeath.Location = New System.Drawing.Point(22, 55)
+        Me.chkModDeath.Name = "chkModDeath"
+        Me.chkModDeath.Size = New System.Drawing.Size(102, 21)
+        Me.chkModDeath.TabIndex = 2
+        Me.chkModDeath.Text = "DeathPenalty"
+        Me.chkModDeath.UseVisualStyleBackColor = True
+        '
+        'cboModResources
+        '
+        Me.cboModResources.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboModResources.FormattingEnabled = True
+        Me.cboModResources.Location = New System.Drawing.Point(143, 84)
+        Me.cboModResources.Name = "cboModResources"
+        Me.cboModResources.Size = New System.Drawing.Size(174, 25)
+        Me.cboModResources.TabIndex = 5
+        '
+        'chkModResources
+        '
+        Me.chkModResources.AutoSize = True
+        Me.chkModResources.Location = New System.Drawing.Point(22, 86)
+        Me.chkModResources.Name = "chkModResources"
+        Me.chkModResources.Size = New System.Drawing.Size(87, 21)
+        Me.chkModResources.TabIndex = 4
+        Me.chkModResources.Text = "Resources"
+        Me.chkModResources.UseVisualStyleBackColor = True
+        '
+        'cboModRaids
+        '
+        Me.cboModRaids.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboModRaids.FormattingEnabled = True
+        Me.cboModRaids.Location = New System.Drawing.Point(143, 115)
+        Me.cboModRaids.Name = "cboModRaids"
+        Me.cboModRaids.Size = New System.Drawing.Size(174, 25)
+        Me.cboModRaids.TabIndex = 7
+        '
+        'chkModRaids
+        '
+        Me.chkModRaids.AutoSize = True
+        Me.chkModRaids.Location = New System.Drawing.Point(22, 117)
+        Me.chkModRaids.Name = "chkModRaids"
+        Me.chkModRaids.Size = New System.Drawing.Size(59, 21)
+        Me.chkModRaids.TabIndex = 6
+        Me.chkModRaids.Text = "Raids"
+        Me.chkModRaids.UseVisualStyleBackColor = True
+        '
+        'cboModPortals
+        '
+        Me.cboModPortals.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboModPortals.FormattingEnabled = True
+        Me.cboModPortals.Location = New System.Drawing.Point(143, 146)
+        Me.cboModPortals.Name = "cboModPortals"
+        Me.cboModPortals.Size = New System.Drawing.Size(174, 25)
+        Me.cboModPortals.TabIndex = 9
+        '
+        'chkModPortals
+        '
+        Me.chkModPortals.AutoSize = True
+        Me.chkModPortals.Location = New System.Drawing.Point(22, 148)
+        Me.chkModPortals.Name = "chkModPortals"
+        Me.chkModPortals.Size = New System.Drawing.Size(67, 21)
+        Me.chkModPortals.TabIndex = 8
+        Me.chkModPortals.Text = "Portals"
+        Me.chkModPortals.UseVisualStyleBackColor = True
+        '
         'frmEditServer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 17.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(426, 381)
+        Me.ClientSize = New System.Drawing.Size(785, 353)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.cboPreset)
+        Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.chkPublic)
         Me.Controls.Add(Me.btnShowHide)
         Me.Controls.Add(Me.chkBackup)
@@ -301,7 +450,9 @@ Partial Class frmEditServer
         Me.MaximizeBox = False
         Me.Name = "frmEditServer"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "frmEditServer"
+        Me.Text = "Edit Server"
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -331,4 +482,17 @@ Partial Class frmEditServer
     Friend WithEvents btnShowHide As Button
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents chkPublic As CheckBox
+    Friend WithEvents Label7 As Label
+    Friend WithEvents cboPreset As ComboBox
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents chkModCombat As CheckBox
+    Friend WithEvents cboModCombat As ComboBox
+    Friend WithEvents cboModResources As ComboBox
+    Friend WithEvents chkModResources As CheckBox
+    Friend WithEvents cboModDeath As ComboBox
+    Friend WithEvents chkModDeath As CheckBox
+    Friend WithEvents cboModPortals As ComboBox
+    Friend WithEvents chkModPortals As CheckBox
+    Friend WithEvents cboModRaids As ComboBox
+    Friend WithEvents chkModRaids As CheckBox
 End Class
