@@ -196,7 +196,7 @@ Public Class clsServer
 
     Public ReadOnly Property WorldDataFolder As String
         Get
-            Return System.IO.Path.Combine(System.IO.Path.Combine(Me.FolderPath, Me.SaveDir), "worlds")
+            Return System.IO.Path.Combine(System.IO.Path.Combine(Me.FolderPath, Me.SaveDir), "worlds_local")
         End Get
     End Property
 
@@ -311,7 +311,7 @@ Public Class clsServer
         mbBackup = bBackup
         miRestartHour = iRestartHour
         miRestartMin = iRestartMin
-        msWorldFolder = System.IO.Path.Combine(msSaveDir, "worlds")
+        msWorldFolder = System.IO.Path.Combine(msSaveDir, "worlds_local")
     End Sub
 
     Public Function HasBackups() As Boolean
