@@ -490,7 +490,7 @@ Public Class clsServer
                     processStartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
                     processStartInfo.UseShellExecute = False
                     processStartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Me.FolderPath)
-                    processStartInfo.EnvironmentVariables.Add("SteamAppId", "892970")
+                    processStartInfo.EnvironmentVariables.Add("SteamAppId", "892970") '896660
                     moServerProc = System.Diagnostics.Process.Start(processStartInfo)
                     System.Threading.Thread.Sleep(3000)
                     If CheckForProcess() = False Then
@@ -747,7 +747,7 @@ Public Class clsServer
             RaiseEvent ServerStatus(Me)
 
 
-            psArgLine = "+login anonymous +force_install_dir """ & Me.FolderPath & """ +app_update 896660 validate +exit"
+            psArgLine = "+force_install_dir """ & Me.FolderPath & """ +login anonymous +app_info_update 1 +app_update 896660 -beta public validate +quit"
 
             processStartInfo = New System.Diagnostics.ProcessStartInfo()
             processStartInfo.FileName = System.IO.Path.Combine(Me.FolderPath, "steamcmd.exe")

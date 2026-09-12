@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Manages a Valheim Game Server")>
 <Assembly: AssemblyCompany("None")>
 <Assembly: AssemblyProduct("ValheimServerManager")>
-<Assembly: AssemblyCopyright("Copyright ©  2021-2024")>
+<Assembly: AssemblyCopyright("Copyright ©  2021-2026")>
 <Assembly: AssemblyTrademark("Valheim is a trademark of Coffee Stain Publishing and Iron Gate AB.  Notice is cautionary and does not imply publication.")>
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.3.0.0")>
-<Assembly: AssemblyFileVersion("1.3.0.0")>
+<Assembly: AssemblyVersion("1.4.0.0")>
+<Assembly: AssemblyFileVersion("1.4.0.0")>
